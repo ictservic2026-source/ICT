@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ICT Dashboard — สรุปภาพรวม</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --blue:#1E40AF;--blue-mid:#3B82F6;--blue-pale:#EFF6FF;--blue-border:#BFDBFE;
+  --ink:#111827;--sub:#6B7280;--mute:#9CA3AF;
+  --border:#E5E7EB;--field:#F9FAFB;--white:#FFFFFF;--bg:#F3F4F6;
+  --green:#15803D;--green-pale:#F0FDF4;--green-border:#BBF7D0;
+  --amber:#D97706;--amber-pale:#FFFBEB;--amber-border:#FDE68A;
+  --red:#DC2626;--red-pale:#FEF2F2;--red-border:#FECACA;
+  --purple:#7C3AED;--purple-pale:#F5F3FF;--purple-border:#DDD6FE;
+  --teal:#0F766E;--teal-pale:#F0FDFA;--teal-border:#99F6E4;
+  --orange:#EA580C;--orange-pale:#FFF7ED;--orange-border:#FED7AA;
+}
+html,body{height:100%;background:var(--bg);}
+body{font-family:'Sarabun',sans-serif;color:var(--ink);display:flex;flex-direction:column;}
+.nav{background:var(--ink);height:56px;display:flex;align-items:center;padding:0 24px;gap:16px;flex-shrink:0;}
+.nav-logo{width:34px;height:34px;background:linear-gradient(135deg,var(--blue-mid),var(--teal));border-radius:8px;display:flex;align-items:center;justify-content:center;}
+.nav-logo svg{width:18px;height:18px;}
+.nav-title{font-family:'Inter',sans-serif;font-size:14px;font-weight:700;color:#fff;}
+.nav-sub{font-size:11px;color:#6B7280;margin-top:1px;}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:12px;}
+.nav-links{display:flex;gap:4px;}
+.nav-link{padding:6px 12px;border-radius:7px;font-size:12px;font-weight:500;color:#9CA3AF;text-decoration:none;transition:all .12s;}
+.nav-link:hover{background:rgba(255,255,255,.08);color:#fff;}
+.nav-link.active{background:rgba(59,130,246,.2);color:#93C5FD;}
+main{flex:1;overflow-y:auto;padding:24px;}
+/* filter bar */
+.filter-bar{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
+.filter-bar h1{font-size:20px;font-weight:700;margin-right:8px;}
+.filter-select{padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:'Sarabun',sans-serif;font-size:13px;background:var(--white);color:var(--ink);cursor:pointer;outline:none;}
+.btn-refresh{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .12s;margin-left:auto;}
+.btn-refresh:hover{background:#1D4ED8;}
+.btn-refresh svg{width:15px;height:15px;stroke:#fff;}
+/* kpi grid */
+.kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:20px;}
+.kpi-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:14px 16px;position:relative;overflow:hidden;}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0;}
+.kpi-open::before{background:var(--blue-mid);}
+.kpi-mgr::before{background:var(--amber);}
+.kpi-ico::before{background:var(--purple);}
+.kpi-itl::before{background:var(--orange);}
+.kpi-itm::before{background:var(--teal);}
+.kpi-done::before{background:var(--green);}
+.kpi-label{font-size:10px;color:var(--sub);font-weight:600;letter-spacing:.04em;margin-bottom:8px;}
+.kpi-value{font-family:'Inter',sans-serif;font-size:26px;font-weight:700;color:var(--ink);}
+.kpi-sub{font-size:10px;color:var(--mute);margin-top:4px;}
+/* charts */
+.charts-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;}
+.chart-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;}
+.chart-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:14px;}
+.chart-wrap{position:relative;height:200px;}
+/* summary row */
+.summary-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.summary-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;}
+.summary-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;}
+/* dept table */
+.dept-table{width:100%;border-collapse:collapse;}
+.dept-table th{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);padding:7px 10px;text-align:left;border-bottom:1px solid var(--border);}
+.dept-table td{padding:8px 10px;font-size:12px;border-bottom:1px solid var(--border);}
+.dept-table tr:last-child td{border-bottom:none;}
+.dept-bar-wrap{flex:1;background:var(--field);border-radius:4px;height:6px;overflow:hidden;}
+.dept-bar{height:100%;border-radius:4px;background:var(--blue-mid);}
+/* satisfaction */
+.star-display{display:flex;align-items:center;gap:3px;}
+.star{font-size:18px;}
+.star.filled{color:#F59E0B;}
+.star.empty{color:#E5E7EB;}
+.score-big{font-family:'Inter',sans-serif;font-size:40px;font-weight:700;color:var(--ink);}
+.score-count{font-size:12px;color:var(--mute);}
+.survey-bars{margin-top:12px;}
+.survey-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;font-size:12px;}
+.survey-bar-row label{flex-shrink:0;}
+.survey-bar-bg{flex:1;background:var(--field);border-radius:4px;height:10px;overflow:hidden;}
+.survey-bar-fill{height:100%;border-radius:4px;background:#F59E0B;}
+.survey-bar-count{width:24px;text-align:right;font-family:'Inter',sans-serif;font-size:11px;color:var(--sub);flex-shrink:0;}
+/* recent list */
+.recent-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+.recent-item:last-child{border-bottom:none;}
+.recent-no{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:var(--blue);min-width:80px;}
+.recent-info{flex:1;overflow:hidden;}
+.recent-name{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.recent-dept{font-size:11px;color:var(--sub);}
+.recent-date{font-size:11px;color:var(--mute);font-family:'Inter',sans-serif;flex-shrink:0;}
+.status{display:inline-flex;padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap;font-family:'Inter',sans-serif;}
+/* avg days */
+.metric-row{display:flex;gap:16px;margin-top:8px;}
+.metric-box{flex:1;background:var(--field);border-radius:8px;padding:12px;text-align:center;}
+.metric-val{font-family:'Inter',sans-serif;font-size:22px;font-weight:700;color:var(--ink);}
+.metric-label{font-size:11px;color:var(--sub);margin-top:2px;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--ink);color:#fff;padding:10px 20px;border-radius:10px;font-size:13px;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;z-index:400;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.err{background:var(--red);}
+@keyframes spin{to{transform:rotate(360deg);}}
+.spin{animation:spin .8s linear infinite;}
+@media(max-width:1100px){.kpi-grid{grid-template-columns:repeat(3,1fr);}.charts-row{grid-template-columns:1fr 1fr;}}
+@media(max-width:700px){.kpi-grid{grid-template-columns:1fr 1fr;}.charts-row{grid-template-columns:1fr;}.summary-row{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-logo"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+  <div><div class="nav-title">ICT Service Desk — Dashboard</div><div class="nav-sub">NISSEI TRADING (THAILAND)</div></div>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a class="nav-link" href="ico-admin.html">ICO</a>
+      <a class="nav-link" href="admin-itl.html">ITL</a>
+      <a class="nav-link" href="admin-itm.html">IT MGR</a>
+      <a class="nav-link active" href="#">Dashboard</a>
+    </div>
+  </div>
+</nav>
+<main>
+  <div class="filter-bar">
+    <h1>📊 สรุปภาพรวมงาน</h1>
+    <select class="filter-select" id="monthFilter" onchange="loadAll()"></select>
+    <select class="filter-select" id="deptFilter" onchange="loadAll()">
+      <option value="">ทุกแผนก</option>
+    </select>
+    <select class="filter-select" id="catFilter" onchange="loadAll()">
+      <option value="">ทุกประเภทงาน</option>
+      <option value="Hardware">Hardware</option>
+      <option value="Software">Software</option>
+      <option value="Network">Network</option>
+      <option value="Other">Other</option>
+    </select>
+    <button class="btn-refresh" onclick="loadAll()">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+      รีเฟรช
+    </button>
+  </div>
+
+  <!-- KPI -->
+  <div class="kpi-grid">
+    <div class="kpi-card kpi-open"><div class="kpi-label">OPEN</div><div class="kpi-value" id="k-open">—</div><div class="kpi-sub">รับแจ้งแล้ว</div></div>
+    <div class="kpi-card kpi-mgr"><div class="kpi-label">MGR WAIT</div><div class="kpi-value" id="k-mgr">—</div><div class="kpi-sub">รอหัวหน้า</div></div>
+    <div class="kpi-card kpi-ico"><div class="kpi-label">ICO WORK</div><div class="kpi-value" id="k-ico">—</div><div class="kpi-sub">ICO ดำเนินการ</div></div>
+    <div class="kpi-card kpi-itl"><div class="kpi-label">ITL WAIT</div><div class="kpi-value" id="k-itl">—</div><div class="kpi-sub">รออนุมัติ ITL</div></div>
+    <div class="kpi-card kpi-itm"><div class="kpi-label">IT MGR</div><div class="kpi-value" id="k-itm">—</div><div class="kpi-sub">รออนุมัติ IT MGR</div></div>
+    <div class="kpi-card kpi-done"><div class="kpi-label">DONE</div><div class="kpi-value" id="k-done">—</div><div class="kpi-sub">เสร็จสิ้น</div></div>
+  </div>
+
+  <!-- Charts Row 1 -->
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="chart-title">สถานะงานทั้งหมด</div>
+      <div class="chart-wrap"><canvas id="chartStatus"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">ประเภทงาน</div>
+      <div class="chart-wrap"><canvas id="chartCat"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">งานรายเดือน (ปีนี้)</div>
+      <div class="chart-wrap"><canvas id="chartMonth"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Summary Row -->
+  <div class="summary-row">
+    <!-- Dept -->
+    <div class="summary-card">
+      <div class="summary-title">
+        <span>จำนวนงานแยกตามแผนก</span>
+        <span style="font-size:11px;color:var(--mute);" id="dept-total-label"></span>
+      </div>
+      <table class="dept-table">
+        <thead><tr><th>แผนก</th><th>งาน</th><th style="width:120px;">สัดส่วน</th></tr></thead>
+        <tbody id="deptTableBody"><tr><td colspan="3" style="text-align:center;color:var(--mute);padding:20px;">กำลังโหลด...</td></tr></tbody>
+      </table>
+    </div>
+
+    <!-- Right: satisfaction + metrics -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <!-- Satisfaction -->
+      <div class="summary-card" style="flex:none;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div class="summary-title" style="margin:0;">⭐ ความพึงพอใจ (FM-IC-001)</div>
+          <span style="font-size:11px;color:var(--mute);" id="survey-period"></span>
+        </div>
+        <!-- Score big + grade -->
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+          <div style="text-align:center;min-width:70px;">
+            <div class="score-big" id="survey-score" style="line-height:1;">—</div>
+            <div style="font-size:10px;color:var(--mute);margin-top:2px;">/ 100</div>
+            <div id="survey-grade" style="font-size:11px;font-weight:700;margin-top:4px;color:var(--sub);">—</div>
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:10px;color:var(--mute);margin-bottom:6px;font-weight:600;">คะแนนเฉลี่ยรายหัวข้อ</div>
+            <!-- Q bars -->
+            <div class="survey-bar-row"><label style="width:120px;font-size:10px;color:var(--sub);text-align:left;">แก้ไขตรงรายการ</label><div class="survey-bar-bg"><div class="survey-bar-fill" id="qb1" style="width:0%"></div></div><span class="survey-bar-count"><span id="qa1">0</span><span style="color:var(--mute)">/30</span></span></div>
+            <div class="survey-bar-row"><label style="width:120px;font-size:10px;color:var(--sub);text-align:left;">ตรงตามเวลา</label><div class="survey-bar-bg"><div class="survey-bar-fill" id="qb2" style="width:0%"></div></div><span class="survey-bar-count"><span id="qa2">0</span><span style="color:var(--mute)">/30</span></span></div>
+            <div class="survey-bar-row"><label style="width:120px;font-size:10px;color:var(--sub);text-align:left;">การอธิบาย จนท.</label><div class="survey-bar-bg"><div class="survey-bar-fill" id="qb3" style="width:0%"></div></div><span class="survey-bar-count"><span id="qa3">0</span><span style="color:var(--mute)">/20</span></span></div>
+            <div class="survey-bar-row"><label style="width:120px;font-size:10px;color:var(--sub);text-align:left;">ความสุภาพ</label><div class="survey-bar-bg"><div class="survey-bar-fill" id="qb4" style="width:0%"></div></div><span class="survey-bar-count"><span id="qa4">0</span><span style="color:var(--mute)">/10</span></span></div>
+            <div class="survey-bar-row"><label style="width:120px;font-size:10px;color:var(--sub);text-align:left;">พึงพอใจรวม</label><div class="survey-bar-bg"><div class="survey-bar-fill" id="qb5" style="width:0%"></div></div><span class="survey-bar-count"><span id="qa5">0</span><span style="color:var(--mute)">/10</span></span></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px solid var(--border);">
+          <div style="font-size:11px;color:var(--mute);" id="survey-count">0 การประเมิน</div>
+          <div style="font-size:11px;color:var(--mute);">☑ แก้ไขเรียบร้อย <b id="chk1-count">0</b> &nbsp;☑ อธิบายแล้ว <b id="chk2-count">0</b></div>
+        </div>
+      </div>
+      <!-- Metrics -->
+      <div class="summary-card" style="flex:none;">
+        <div class="summary-title"><span>⏱ SLA / เวลาดำเนินการ</span></div>
+        <div class="metric-row">
+          <div class="metric-box"><div class="metric-val" id="m-avgday">—</div><div class="metric-label">เฉลี่ย วัน/เคส</div></div>
+          <div class="metric-box"><div class="metric-val" id="m-maxday">—</div><div class="metric-label">นานสุด (วัน)</div></div>
+          <div class="metric-box"><div class="metric-val" id="m-cost">—</div><div class="metric-label">ค่าใช้จ่ายรวม (฿)</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent -->
+  <div class="summary-card" style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;">
+    <div class="summary-title"><span>รายการล่าสุด</span></div>
+    <div id="recentList"><div style="text-align:center;color:var(--mute);padding:24px;font-size:13px;">กำลังโหลด...</div></div>
+  </div>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+const SB="https://dcsjvursqnvhcwbeqzmd.supabase.co";
+const KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRjc2p2dXJzcW52aGN3YmVxem1kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExNDY0NTYsImV4cCI6MjA5NjcyMjQ1Nn0.IZyMbPMY3Vk8sIM5n8pqBzFoNRlJPpCKitJwgsnc_Hg";
+const HDR={'apikey':KEY,'Authorization':'Bearer '+KEY};
+const API=`${SB}/rest/v1/tickets`;
+const SVCAPI=`${SB}/rest/v1/ticket_services`;
+const SURVAPI=`${SB}/rest/v1/ticket_survey`;
+let chartStatus=null,chartCat=null,chartMonth=null;
+
+// build month selector
+(function(){
+  const sel=document.getElementById('monthFilter');
+  const now=new Date();
+  for(let i=0;i<12;i++){
+    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
+    const val=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    const label=d.toLocaleDateString('th-TH',{year:'numeric',month:'long'});
+    const opt=document.createElement('option');
+    opt.value=val;opt.textContent=label;
+    if(i===0)opt.selected=true;
+    sel.appendChild(opt);
+  }
+  const allOpt=document.createElement('option');allOpt.value='';allOpt.textContent='ทุกช่วงเวลา';
+  sel.appendChild(allOpt);
+})();
+
+async function loadAll(){
+  const month=document.getElementById('monthFilter').value;
+  const dept=document.getElementById('deptFilter').value;
+  const cat=document.getElementById('catFilter').value;
+  try{
+    let url=`${API}?order=request_date.desc&limit=500`;
+    if(month)url+=`&request_date=gte.${month}-01&request_date=lt.${nextMonth(month)}`;
+    const res=await fetch(url,{headers:HDR});
+    let data=await res.json();
+    if(!Array.isArray(data))throw new Error(data.message);
+    if(dept)data=data.filter(t=>t.department===dept);
+    if(cat)data=data.filter(t=>t.job_category===cat);
+    buildKPI(data);
+    buildStatusChart(data);
+    buildCatChart(data);
+    buildMonthChart();
+    buildDeptTable(data);
+    buildRecent(data);
+    // dept filter populate
+    const depts=[...new Set(data.map(t=>t.department).filter(Boolean))].sort();
+    const dsel=document.getElementById('deptFilter');
+    const cur=dsel.value;
+    dsel.innerHTML='<option value="">ทุกแผนก</option>'+depts.map(d=>`<option value="${esc(d)}"${d===cur?' selected':''}>${esc(d)}</option>`).join('');
+    // survey
+    await loadSurvey(month);
+    // service metrics
+    await loadMetrics(data.map(t=>t.ticket_no));
+  }catch(e){showToast('❌ '+e.message,'err');}
+}
+
+function buildKPI(data){
+  const count=s=>data.filter(t=>t.status===s).length;
+  document.getElementById('k-open').textContent=count('OPEN');
+  document.getElementById('k-mgr').textContent=count('MGR_WAIT');
+  document.getElementById('k-ico').textContent=count('ICO_WORK')+count('ICO_FINAL');
+  document.getElementById('k-itl').textContent=count('ITL_WAIT');
+  document.getElementById('k-itm').textContent=count('ITM_WAIT');
+  document.getElementById('k-done').textContent=count('DONE');
+}
+function buildStatusChart(data){
+  const labels=['OPEN','รอหัวหน้า','ICO ดำเนินการ','รอ ITL','รอ IT MGR','เสร็จสิ้น','ยกเลิก'];
+  const statuses=['OPEN','MGR_WAIT','ICO_WORK','ITL_WAIT','ITM_WAIT','DONE','CANCELLED'];
+  const counts=statuses.map(s=>data.filter(t=>t.status===s||t.status===(s==='ICO_WORK'?'ICO_FINAL':s)).length);
+  const colors=['#3B82F6','#F59E0B','#7C3AED','#EA580C','#0F766E','#15803D','#DC2626'];
+  if(chartStatus)chartStatus.destroy();
+  chartStatus=new Chart(document.getElementById('chartStatus'),{type:'doughnut',data:{labels,datasets:[{data:counts,backgroundColor:colors,borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{size:10},padding:8}}}}});
+}
+function buildCatChart(data){
+  const cats=['Hardware','Software','Network','Other'];
+  const counts=cats.map(c=>data.filter(t=>t.job_category===c).length);
+  if(chartCat)chartCat.destroy();
+  chartCat=new Chart(document.getElementById('chartCat'),{type:'bar',data:{labels:cats,datasets:[{label:'งาน',data:counts,backgroundColor:['#3B82F6','#7C3AED','#0F766E','#F59E0B'],borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1,font:{size:10}}}}}});
+}
+async function buildMonthChart(){
+  try{
+    const now=new Date();const yr=now.getFullYear();
+    const url=`${API}?request_date=gte.${yr}-01-01&request_date=lt.${yr+1}-01-01&select=request_date,status`;
+    const res=await fetch(url,{headers:HDR});
+    const data=await res.json();
+    const months=Array.from({length:12},(_,i)=>({m:i,open:0,done:0}));
+    data.forEach(t=>{const m=new Date(t.request_date).getMonth();if(m>=0&&m<12){months[m].open++;if(t.status==='DONE')months[m].done++;}});
+    const labels=months.map(m=>new Date(yr,m.m,1).toLocaleDateString('th-TH',{month:'short'}));
+    if(chartMonth)chartMonth.destroy();
+    chartMonth=new Chart(document.getElementById('chartMonth'),{type:'line',data:{labels,datasets:[{label:'รับแจ้ง',data:months.map(m=>m.open),borderColor:'#3B82F6',backgroundColor:'rgba(59,130,246,.1)',tension:.3,fill:true,pointRadius:3},{label:'เสร็จสิ้น',data:months.map(m=>m.done),borderColor:'#15803D',backgroundColor:'rgba(21,128,61,.08)',tension:.3,fill:true,pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{size:10},padding:8}}},scales:{y:{beginAtZero:true,ticks:{stepSize:1,font:{size:10}}}}}});
+  }catch(e){}
+}
+function buildDeptTable(data){
+  const map={};
+  data.forEach(t=>{const d=t.department||'ไม่ระบุ';map[d]=(map[d]||0)+1;});
+  const total=data.length||1;
+  const sorted=Object.entries(map).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  document.getElementById('dept-total-label').textContent=`ทั้งหมด ${data.length} เคส`;
+  document.getElementById('deptTableBody').innerHTML=sorted.length?sorted.map(([d,c])=>{
+    const pct=Math.round(c/total*100);
+    return`<tr><td>${esc(d)}</td><td style="font-family:'Inter',sans-serif;font-weight:600;">${c}</td><td><div style="display:flex;align-items:center;gap:6px;"><div class="dept-bar-wrap"><div class="dept-bar" style="width:${pct}%"></div></div><span style="font-size:11px;color:var(--mute);font-family:'Inter',sans-serif;">${pct}%</span></div></td></tr>`;
+  }).join(''):'<tr><td colspan="3" style="text-align:center;color:var(--mute);padding:16px;">ไม่มีข้อมูล</td></tr>';
+}
+function buildRecent(data){
+  const statusMap={OPEN:{cls:'s-open',l:'OPEN'},MGR_WAIT:{cls:'s-mgr',l:'รอหัวหน้า'},ICO_WORK:{cls:'s-ico',l:'ICO'},ITL_WAIT:{cls:'s-itl',l:'รอ ITL'},ITM_WAIT:{cls:'s-itm',l:'รอ IT MGR'},DONE:{cls:'s-done',l:'เสร็จ'},CANCELLED:{cls:'s-cancel',l:'ยกเลิก'}};
+  const colorMap={'s-open':'var(--blue-pale);color:var(--blue);border:1px solid var(--blue-border)','s-done':'var(--green-pale);color:var(--green);border:1px solid var(--green-border)','s-mgr':'var(--amber-pale);color:var(--amber);border:1px solid var(--amber-border)','s-ico':'var(--purple-pale);color:var(--purple);border:1px solid var(--purple-border)','s-itl':'var(--orange-pale);color:var(--orange);border:1px solid var(--orange-border)','s-itm':'var(--teal-pale);color:var(--teal);border:1px solid var(--teal-border)','s-cancel':'var(--red-pale);color:var(--red);border:1px solid var(--red-border)'};
+  const recent=data.slice(0,10);
+  document.getElementById('recentList').innerHTML=recent.length?recent.map(t=>{
+    const sm=statusMap[t.status]||{cls:'s-open',l:t.status};
+    const d=t.request_date?new Date(t.request_date).toLocaleDateString('th-TH',{day:'2-digit',month:'2-digit',year:'2-digit'}):'—';
+    const style=colorMap[sm.cls]||'var(--blue-pale);color:var(--blue)';
+    return`<div class="recent-item"><span class="recent-no">${esc(t.ticket_no)}</span><div class="recent-info"><div class="recent-name">${esc(t.requester_name||'—')}</div><div class="recent-dept">${esc(t.department||'—')} — ${esc((t.issue_detail||'').slice(0,40))}</div></div><span class="status" style="background:${style};">${sm.l}</span><span class="recent-date">${d}</span></div>`;
+  }).join(''):'<div style="text-align:center;color:var(--mute);padding:20px;font-size:12px;">ไม่มีข้อมูล</div>';
+}
+async function loadSurvey(month){
+  try{
+    let url=`${SURVAPI}?select=score_total,score_q1,score_q2,score_q3,score_q4,score_q5,chk_resolved,chk_explained,created_at&limit=500&order=created_at.desc`;
+    if(month)url+=`&created_at=gte.${month}-01T00:00:00&created_at=lt.${nextMonth(month)}T00:00:00`;
+    const res=await fetch(url,{headers:HDR});
+    const data=await res.json();
+    const noData=()=>{
+      ['survey-score','survey-grade'].forEach(id=>document.getElementById(id).textContent='N/A');
+      document.getElementById('survey-count').textContent='0 การประเมิน';
+      document.getElementById('survey-period').textContent=month||'ทุกช่วง';
+      [1,2,3,4,5].forEach(i=>{
+        const qb=document.getElementById('qb'+i);
+        const qa=document.getElementById('qa'+i);
+        if(qb)qb.style.width='0%';
+        if(qa)qa.textContent='0';
+      });
+      ['chk1-count','chk2-count'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent='0';});
+    };
+    if(!Array.isArray(data)||!data.length){noData();return;}
+
+    /* คะแนนรวมเฉลี่ย */
+    const avg=(data.reduce((a,b)=>a+(b.score_total||0),0)/data.length).toFixed(1);
+    const avgNum=parseFloat(avg);
+    document.getElementById('survey-score').textContent=avg;
+    document.getElementById('survey-count').textContent=`${data.length} การประเมิน`;
+    document.getElementById('survey-period').textContent=month||'ทุกช่วง';
+
+    /* grade */
+    const grade=avgNum>=90?'🏆 ดีเยี่ยม':avgNum>=75?'🎯 ดีมาก':avgNum>=60?'👍 ดี':avgNum>=50?'😐 พอใช้':'⚠️ ควรปรับปรุง';
+    const gradeCol=avgNum>=75?'var(--green)':avgNum>=50?'var(--amber)':'var(--red)';
+    const gradeEl=document.getElementById('survey-grade');
+    if(gradeEl){gradeEl.textContent=grade;gradeEl.style.color=gradeCol;}
+
+    /* score color */
+    const scoreEl=document.getElementById('survey-score');
+    if(scoreEl)scoreEl.style.color=gradeCol;
+
+    /* คะแนนเฉลี่ยรายหัวข้อ */
+    const maxQ={1:30,2:30,3:20,4:10,5:10};
+    [1,2,3,4,5].forEach(i=>{
+      const avgQ=(data.reduce((a,b)=>a+(b[`score_q${i}`]||0),0)/data.length).toFixed(1);
+      const pct=(parseFloat(avgQ)/maxQ[i])*100;
+      const qb=document.getElementById('qb'+i);
+      const qa=document.getElementById('qa'+i);
+      if(qb){qb.style.width=pct+'%';qb.style.background=pct>=75?'var(--green-mid,#22C55E)':pct>=50?'var(--amber)':'var(--red)';}
+      if(qa)qa.textContent=avgQ;
+    });
+
+    /* checkbox counts */
+    const chk1=data.filter(d=>d.chk_resolved).length;
+    const chk2=data.filter(d=>d.chk_explained).length;
+    const c1=document.getElementById('chk1-count');
+    const c2=document.getElementById('chk2-count');
+    if(c1)c1.textContent=chk1;
+    if(c2)c2.textContent=chk2;
+
+  }catch(e){console.warn('loadSurvey error:',e);}
+}
+async function loadMetrics(ticketNos){
+  try{
+    if(!ticketNos.length){document.getElementById('m-avgday').textContent='—';document.getElementById('m-maxday').textContent='—';document.getElementById('m-cost').textContent='—';return;}
+    const res=await fetch(`${SVCAPI}?select=repair_cost,received_date,finish_date&ticket_no=in.(${ticketNos.slice(0,50).map(n=>`"${n}"`).join(',')})`,{headers:HDR});
+    const data=await res.json();
+    if(!Array.isArray(data)||!data.length){document.getElementById('m-avgday').textContent='—';document.getElementById('m-maxday').textContent='—';document.getElementById('m-cost').textContent='—';return;}
+    const days=data.filter(d=>d.received_date&&d.finish_date).map(d=>Math.max(0,Math.round((new Date(d.finish_date)-new Date(d.received_date))/(1000*60*60*24))));
+    const avgDay=days.length?(days.reduce((a,b)=>a+b,0)/days.length).toFixed(1):'—';
+    const maxDay=days.length?Math.max(...days):'—';
+    const totalCost=data.reduce((a,b)=>a+(parseFloat(b.repair_cost)||0),0);
+    document.getElementById('m-avgday').textContent=avgDay;
+    document.getElementById('m-maxday').textContent=maxDay;
+    document.getElementById('m-cost').textContent=totalCost?totalCost.toLocaleString('th-TH',{maximumFractionDigits:0}):'0';
+  }catch(e){}
+}
+function nextMonth(ym){const[y,m]=ym.split('-').map(Number);return m===12?`${y+1}-01`:`${y}-${String(m+1).padStart(2,'0')}`;}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+let toastTimer;
+function showToast(msg,type){const t=document.getElementById('toast');t.textContent=msg;t.className='toast'+(type?' '+type:'');void t.offsetWidth;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3500);}
+loadAll();
+</script>
+</body>
+</html>

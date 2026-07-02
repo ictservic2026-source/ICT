@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Webhook Automation</title>
+</head>
+<body>
+    <h2>ICT Service System Test</h2>
+    <p>กดปุ่มเพื่อทดสอบส่งสถานะงานไปที่ Make.com</p>
+    
+    <!-- ปุ่มทดสอบอนุมัติ -->
+    <button onclick="sendTest('APPROVED')">ทดสอบ: อนุมัติงาน</button>
+    <!-- ปุ่มทดสอบตีกลับ -->
+    <button onclick="sendTest('REJECTED')">ทดสอบ: ตีกลับงาน</button>
+
+    <script>
+        async function sendTest(status) {
+            const url = 'https://hook.us2.make.com/t4m6a1lxgb7wcslvqtmyaz6wxhs3gn80';
+            const data = {
+                ticket_id: "TCK-2026-999", // เลขตั๋วจำลอง
+                status: status,           // สถานะที่ส่งไป
+                user: "System_Test",
+                timestamp: new Date().toLocaleString()
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (response.ok) {
+                    alert('ส่งข้อมูล ' + status + ' สำเร็จแล้ว! ตรวจสอบที่ Make.com');
+                }
+            } catch (error) {
+                alert('เกิดข้อผิดพลาด: ' + error);
+            }
+        }
+    </script>
+</body>
+</html>
