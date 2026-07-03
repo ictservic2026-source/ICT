@@ -442,12 +442,13 @@ async function doAction(action){
       body:JSON.stringify({status:newStatus,itl_approved_at:new Date().toISOString()})
     });
     if(!ticketRes.ok){const e=await ticketRes.text();throw new Error('อัปเดตสถานะไม่สำเร็จ: '+e);}
-    /* บันทึก log */
-    await fetch(LOG,{
+    /* บันทึก log — จุดนี้คือแหล่งข้อมูลจริงที่ ICO ใช้แสดงผล ITL ต้องเช็คว่าสำเร็จจริง */
+    const logRes=await fetch(LOG,{
       method:'POST',
       headers:{...HDR,'Content-Type':'application/json','Prefer':'return=minimal'},
       body:JSON.stringify({ticket_no:currentTicket.ticket_no,step_name:'ITL_APPROVE',status:logStatus,action_by:itlName.trim(),comment:comment||null})
     });
+    if(!logRes.ok){const le=await logRes.text();console.error('[ITL] บันทึก log ไม่สำเร็จ:',le);showToast('⚠️ อัปเดตสถานะสำเร็จ แต่บันทึกประวัติ (log) ไม่สำเร็จ: '+le,'err');}
     /* ── Make.com Webhook ── */
     try{
       await fetch('https://hook.us2.make.com/gjjomwjmrzwr2rnsu443vaq4omxqv8vc',{
