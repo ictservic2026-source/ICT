@@ -24,7 +24,10 @@ body{font-family:'Sarabun',sans-serif;color:var(--ink);display:flex;flex-directi
 .nav-logo svg{width:18px;height:18px;}
 .nav-title{font-family:'Inter',sans-serif;font-size:14px;font-weight:700;color:#fff;}
 .nav-sub{font-size:11px;color:#6B7280;margin-top:1px;}
-.nav-badge{margin-left:auto;font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;padding:4px 10px;border-radius:20px;background:rgba(15,118,110,.25);color:#5EEAD4;border:1px solid rgba(15,118,110,.4);}
+.nav-badge{font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;padding:4px 10px;border-radius:20px;background:rgba(15,118,110,.25);color:#5EEAD4;border:1px solid rgba(15,118,110,.4);}
+.nav-dash-link{margin-left:auto;display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;background:rgba(255,255,255,.08);color:#fff;font-family:'Sarabun',sans-serif;font-size:12px;font-weight:600;text-decoration:none;transition:background .12s;}
+.nav-dash-link:hover{background:rgba(255,255,255,.16);}
+.nav-dash-link svg{width:14px;height:14px;stroke:currentColor;flex-shrink:0;}
 .layout{display:flex;flex:1;overflow:hidden;}
 .sidebar{width:220px;background:var(--white);border-right:1px solid var(--border);overflow-y:auto;flex-shrink:0;}
 .main{flex:1;overflow-y:auto;padding:24px;}
@@ -34,7 +37,7 @@ body{font-family:'Sarabun',sans-serif;color:var(--ink);display:flex;flex-directi
 .sb-item.active{background:var(--teal-pale);color:var(--teal);font-weight:600;}
 .sb-item svg{width:16px;height:16px;stroke:currentColor;flex-shrink:0;}
 .sb-badge{margin-left:auto;background:var(--teal);color:#fff;border-radius:10px;font-size:10px;font-weight:700;padding:1px 7px;font-family:'Inter',sans-serif;}
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:20px;}
 .stat-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px 18px;}
 .stat-label{font-size:11px;color:var(--sub);font-weight:500;margin-bottom:6px;}
 .stat-value{font-family:'Inter',sans-serif;font-size:28px;font-weight:700;color:var(--ink);}
@@ -142,6 +145,10 @@ textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(15,118,110,.1)
 <nav class="nav">
   <div class="nav-logo"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
   <div><div class="nav-title">ICT Service Desk</div><div class="nav-sub">NISSEI TRADING (THAILAND)</div></div>
+  <a href="dashboard.html" class="nav-dash-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="12" width="4" height="9"/><rect x="10" y="6" width="4" height="15"/><rect x="17" y="3" width="4" height="18"/></svg>
+    Dashboard
+  </a>
   <div class="nav-badge">IT Manager Portal</div>
 </nav>
 <div class="layout">
@@ -158,6 +165,10 @@ textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(15,118,110,.1)
     <div class="sb-item" onclick="setFilter('CANCELLED')">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
       ยกเลิก
+    </div>
+    <div class="sb-item" onclick="setFilter('ICO_WORK')">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>
+      ตีกลับ ICO <span class="sb-badge" id="backBadge" style="background:var(--amber);">—</span>
     </div>
   </aside>
   <main class="main">
@@ -182,6 +193,11 @@ textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(15,118,110,.1)
         <div class="stat-value" id="s-cancel">—</div>
         <div class="stat-pill" style="background:var(--red-pale);color:var(--red);border:1px solid var(--red-border);">Cancelled</div>
       </div>
+      <div class="stat-card" style="border-color:var(--amber-border);">
+        <div class="stat-label">ตีกลับ ICO</div>
+        <div class="stat-value" id="s-back" style="color:var(--amber);">—</div>
+        <div class="stat-pill" style="background:var(--amber-pale);color:var(--amber);border:1px solid var(--amber-border);">รอ ICO แก้ไข</div>
+      </div>
     </div>
     <div class="toolbar">
       <span class="toolbar-title">รายการรออนุมัติ IT Manager</span>
@@ -192,6 +208,7 @@ textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(15,118,110,.1)
       <select class="filter-select" id="statusFilter">
         <option value="ITM_WAIT">รออนุมัติ IT MGR</option>
         <option value="ICO_FINAL">ICO กำลังปิดงาน</option>
+        <option value="ICO_WORK">ตีกลับ ICO</option>
         <option value="DONE">เสร็จสิ้น</option>
         <option value="CANCELLED">ยกเลิก</option>
         <option value="">ทั้งหมด</option>
@@ -225,6 +242,13 @@ textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(15,118,110,.1)
         <div style="font-size:12px;color:var(--sub);margin-top:2px;" id="rm-sub">—</div>
       </div>
       <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div id="bounce-banner" style="display:none;margin:16px 24px 0;background:var(--amber-pale);border:1.5px solid var(--amber-border);border-radius:10px;padding:12px 16px;align-items:flex-start;gap:10px;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" style="flex-shrink:0;margin-top:1px;"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>
+      <div style="font-size:12px;color:#92400E;line-height:1.6;">
+        <strong>งานนี้ถูก IT MGR ตีกลับไป ICO</strong> — ยังไม่ได้เริ่มขั้นตอนใหม่จนกว่า ICO จะแก้ไขและส่งกลับมาอีกครั้ง<br>
+        <span id="bounce-meta"></span>
+      </div>
     </div>
     <div class="timeline">
       <div class="tl-step done"><div class="tl-dot">✓</div><div class="tl-label">ผู้แจ้ง</div></div>
@@ -344,12 +368,32 @@ async function refreshTickets(){
     const res=await fetch(`${API}?status=in.(ITM_WAIT,ICO_FINAL,DONE,CANCELLED)&order=request_date.desc&limit=200`,{headers:HDR});
     const data=await res.json();
     if(!Array.isArray(data))throw new Error(data.message||'โหลดไม่สำเร็จ');
-    allTickets=data;
+
+    /* ── ตีกลับ ICO: หา ticket ที่ IT MGR เคยตีกลับ (จาก log) แล้วเช็คว่ายังค้างอยู่จริง (status ปัจจุบัน = ICO_WORK) ── */
+    let backTickets=[];
+    try{
+      const lr=await fetch(`${LOG}?step_name=eq.IT_MGR_APPROVE&status=eq.BACK_TO_ICO&order=created_at.desc&select=ticket_no,action_by,comment,created_at`,{headers:HDR});
+      const lrows=await lr.json();
+      if(Array.isArray(lrows)&&lrows.length){
+        const bounceInfo={};
+        lrows.forEach(r=>{ if(!bounceInfo[r.ticket_no]) bounceInfo[r.ticket_no]=r; }); // rows เรียง desc แล้ว เก็บแค่ครั้งล่าสุดต่อ ticket
+        const noList=Object.keys(bounceInfo);
+        if(noList.length){
+          const tr=await fetch(`${API}?ticket_no=in.(${noList.map(encodeURIComponent).join(',')})&status=eq.ICO_WORK`,{headers:HDR});
+          const trows=await tr.json();
+          if(Array.isArray(trows))backTickets=trows.map(t=>({...t,_bounce:bounceInfo[t.ticket_no]}));
+        }
+      }
+    }catch(be){console.warn('[ITM] โหลดรายการตีกลับไม่สำเร็จ',be);}
+
+    allTickets=[...data,...backTickets];
     document.getElementById('s-pending').textContent=data.filter(t=>t.status==='ITM_WAIT').length;
     document.getElementById('s-approved').textContent=data.filter(t=>t.status==='ICO_FINAL').length;
     document.getElementById('s-done').textContent=data.filter(t=>t.status==='DONE').length;
     document.getElementById('s-cancel').textContent=data.filter(t=>t.status==='CANCELLED').length;
+    document.getElementById('s-back').textContent=backTickets.length;
     document.getElementById('pendingBadge').textContent=data.filter(t=>t.status==='ITM_WAIT').length;
+    document.getElementById('backBadge').textContent=backTickets.length;
     renderTable();
   }catch(e){showToast('❌ '+e.message,'err');}
 }
@@ -362,20 +406,21 @@ function renderTable(){
     const ms=!st||t.status===st;
     return mq&&ms;
   });
-  const smap={ITM_WAIT:'<span class="status s-itm">รออนุมัติ IT MGR</span>',ICO_FINAL:'<span class="status" style="background:var(--blue-pale);color:var(--blue);border:1px solid var(--blue-border);">ICO ปิดงาน</span>',DONE:'<span class="status s-done">เสร็จสิ้น</span>',CANCELLED:'<span class="status s-cancel">ยกเลิก</span>'};
+  const smap={ITM_WAIT:'<span class="status s-itm">รออนุมัติ IT MGR</span>',ICO_FINAL:'<span class="status" style="background:var(--blue-pale);color:var(--blue);border:1px solid var(--blue-border);">ICO ปิดงาน</span>',DONE:'<span class="status s-done">เสร็จสิ้น</span>',CANCELLED:'<span class="status s-cancel">ยกเลิก</span>',ICO_WORK:'<span class="status" style="background:var(--amber-pale);color:var(--amber);border:1px solid var(--amber-border);">↩ ตีกลับ ICO</span>'};
   const tbody=document.getElementById('ticketTableBody');
   if(!rows.length){tbody.innerHTML='<tr class="loading-row"><td colspan="8">ไม่พบข้อมูล</td></tr>';return;}
   tbody.innerHTML=rows.map(t=>{
     const d=t.request_date?new Date(t.request_date).toLocaleDateString('th-TH',{day:'2-digit',month:'2-digit',year:'2-digit'}):'—';
     const issue=(t.issue_detail||'').slice(0,45)+((t.issue_detail||'').length>45?'…':'');
     const cost=t.repair_cost?'฿'+Number(t.repair_cost).toLocaleString():'—';
+    const bounceTip=t._bounce?` title="ตีกลับโดย ${esc(t._bounce.action_by||'—')} เมื่อ ${fmtDT(t._bounce.created_at)}${t._bounce.comment?' — '+esc(t._bounce.comment):''}"`:'';
     return`<tr onclick="openModal('${esc(t.ticket_no)}')">
       <td><span class="td-no">${esc(t.ticket_no)}</span></td>
       <td><span class="td-name">${esc(t.requester_name||'—')}</span></td>
       <td style="font-size:12px;color:var(--sub);">${esc(t.department||'—')}</td>
       <td title="${esc(t.issue_detail||'')}">${esc(issue)}</td>
       <td style="font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:var(--teal);">${cost}</td>
-      <td>${smap[t.status]||t.status}</td>
+      <td${bounceTip}>${smap[t.status]||t.status}</td>
       <td><span class="td-date">${d}</span></td>
       <td><button class="btn-row btn-review" onclick="event.stopPropagation();openModal('${esc(t.ticket_no)}')">อนุมัติ</button></td>
     </tr>`;
@@ -399,6 +444,13 @@ async function openModal(no){
   document.getElementById('rm-itl-status').textContent=currentTicket.itl_status==='ITL_APPROVE'?'✅ อนุมัติ':currentTicket.itl_status||'—';
   document.getElementById('rm-itl-comment').textContent=currentTicket.itl_comment||'—';
   document.getElementById('itm-comment').value='';
+  const bb=document.getElementById('bounce-banner');
+  if(currentTicket._bounce){
+    bb.style.display='flex';
+    document.getElementById('bounce-meta').textContent=`ตีกลับโดย ${currentTicket._bounce.action_by||'—'} เมื่อ ${fmtDT(currentTicket._bounce.created_at)}${currentTicket._bounce.comment?' — เหตุผล: '+currentTicket._bounce.comment:''}`;
+  }else{
+    bb.style.display='none';
+  }
   try{
     const r=await fetch(`${SVCAPI}?ticket_no=eq.${encodeURIComponent(no)}&limit=1`,{headers:HDR});
     const rows=await r.json();
@@ -454,7 +506,7 @@ async function doAction(action){
   if(!mgrName||!mgrName.trim()){showToast('กรุณาระบุชื่อก่อน','err');return;}
   const statusMap={ITM_APPROVE:'ICO_FINAL',CANCELLED:'CANCELLED',BACK_TO_ITL:'ITL_WAIT',BACK_TO_ICO:'ICO_WORK'};
   const newStatus=statusMap[action]||'ICO_FINAL';
-  const logStatus=action==='ITM_APPROVE'?'APPROVED':action==='CANCELLED'?'CANCELLED':'REJECTED';
+  const logStatus=action==='ITM_APPROVE'?'APPROVED':action==='CANCELLED'?'CANCELLED':action; // BACK_TO_ITL / BACK_TO_ICO บันทึกตามจริง ไม่ยุบเป็น REJECTED
   /* disable all action buttons */
   document.querySelectorAll('.modal-foot button').forEach(b=>b.disabled=true);
   try{
