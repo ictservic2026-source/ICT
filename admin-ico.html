@@ -228,6 +228,13 @@ textarea{resize:vertical;min-height:72px;line-height:1.6;}
 .itm-notice-text{font-size:13px;color:var(--teal);font-weight:600;}
 .itm-notice-sub{font-size:11px;color:var(--sub);margin-top:2px;}
 
+/* bounce-back notice box */
+.bounce-notice{background:linear-gradient(135deg,var(--red-pale),#FFF1F2);border:1.5px solid var(--red-border);border-radius:10px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:flex-start;gap:12px;}
+.bounce-notice svg{width:22px;height:22px;stroke:var(--red);flex-shrink:0;margin-top:1px;}
+.bounce-notice-text{font-size:13px;color:var(--red);font-weight:700;}
+.bounce-notice-sub{font-size:11.5px;color:#7F1D1D;margin-top:4px;line-height:1.5;white-space:pre-wrap;}
+.comment-item.bounce{background:var(--red-pale);border-left:3px solid var(--red);}
+
 /* close-work section */
 .close-box{background:linear-gradient(135deg,var(--green-pale),#ECFDF5);border:1.5px solid var(--green-border);border-radius:10px;padding:14px 16px;margin-bottom:14px;}
 .close-box-title{font-size:12px;font-weight:700;color:var(--green);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
@@ -615,6 +622,14 @@ textarea{resize:vertical;min-height:72px;line-height:1.6;}
 
     <!-- Tab: บันทึกงาน ICO -->
     <div class="tab-pane" id="t-work">
+      <!-- Bounced-back notice -->
+      <div class="bounce-notice" id="bounceBanner" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+        <div style="flex:1;">
+          <div class="bounce-notice-text" id="bounceBannerText">งานนี้ถูกตีกลับ</div>
+          <div class="bounce-notice-sub" id="bounceBannerComment">—</div>
+        </div>
+      </div>
       <!-- IT MGR approved notice -->
       <div class="itm-notice" id="itm-notice" style="display:none;">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -695,6 +710,7 @@ textarea{resize:vertical;min-height:72px;line-height:1.6;}
       <div class="info-group">
         <div class="info-row"><span class="info-key">ITL ผู้ตรวจสอบ</span><span class="info-val" id="itl-name">—</span></div>
         <div class="info-row"><span class="info-key">ผลการตรวจสอบ</span><span class="info-val" id="itl-status">—</span></div>
+        <div class="info-row"><span class="info-key">วันที่/เวลา</span><span class="info-val" id="itl-date">—</span></div>
         <div class="info-row" style="flex-direction:column;gap:4px;"><span class="info-key" style="min-width:unset;">ความเห็น ITL</span><span class="info-val long" id="itl-comment">—</span></div>
       </div>
     </div>
@@ -705,6 +721,7 @@ textarea{resize:vertical;min-height:72px;line-height:1.6;}
         <div class="info-row"><span class="info-key">IT Manager</span><span class="info-val" id="itm-name">—</span></div>
         <div class="info-row"><span class="info-key">ผลการอนุมัติ</span><span class="info-val" id="itm-status">—</span></div>
         <div class="info-row"><span class="info-key">ระดับ Priority</span><span class="info-val" id="itm-priority">—</span></div>
+        <div class="info-row"><span class="info-key">วันที่/เวลา</span><span class="info-val" id="itm-date">—</span></div>
         <div class="info-row" style="flex-direction:column;gap:4px;"><span class="info-key" style="min-width:unset;">ความเห็น IT MGR</span><span class="info-val long" id="itm-comment">—</span></div>
       </div>
     </div>
@@ -748,6 +765,19 @@ textarea{resize:vertical;min-height:72px;line-height:1.6;}
 <div id="lb" onclick="closeLB()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;align-items:center;justify-content:center;">
   <button style="position:absolute;top:18px;right:22px;background:rgba(255,255,255,.15);border:none;color:#fff;width:34px;height:34px;border-radius:50%;font-size:18px;cursor:pointer;">×</button>
   <img id="lbImg" src="" style="max-width:90vw;max-height:88vh;border-radius:9px;object-fit:contain;">
+</div>
+<!-- File Preview Modal -->
+<div id="filePreviewModal" onclick="if(event.target===this)closeFilePreview()" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.75);z-index:600;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border-radius:12px;width:100%;max-width:920px;height:88vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.35);">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--field);gap:10px;">
+      <div id="fpName" style="font-size:12.5px;font-weight:700;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;">—</div>
+      <div style="display:flex;gap:8px;flex-shrink:0;align-items:center;">
+        <a id="fpDownload" href="#" target="_blank" class="btn-neutral btn-sm" style="text-decoration:none;">⬇ ดาวน์โหลด</a>
+        <button class="modal-close" onclick="closeFilePreview()"><svg viewBox="0 0 24 24" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+    </div>
+    <div id="fpBody" style="flex:1;overflow:auto;background:#525659;display:flex;align-items:center;justify-content:center;"></div>
+  </div>
 </div>
 <div class="toast" id="toast"></div>
 
@@ -1056,6 +1086,8 @@ async function openModal(no){
   currentTicket=allTickets.find(t=>t.ticket_no===no);
   if(!currentTicket)return;
   const T=currentTicket;
+  console.log('[ICO] เปิด ticket:',no,'| ข้อมูลดิบจาก tickets table:',T);
+  document.getElementById('bounceBanner').style.display='none';
   document.getElementById('wm-title').textContent=`จัดการงาน — ${no}`;
   document.getElementById('wm-sub').textContent=T.issue_detail?T.issue_detail.slice(0,80):'—';
   // info tab
@@ -1162,14 +1194,68 @@ async function loadLog(no){
   try{
     const r=await fetch(`${LOG}?ticket_no=eq.${encodeURIComponent(no)}&order=created_at.asc`,{headers:HDR});
     const rows=await r.json();
-    if(!rows.length){t.innerHTML='<div style="padding:14px;text-align:center;color:var(--mute);font-size:12px;">ยังไม่มี log</div>';return;}
+    if(!r.ok){
+      /* แสดง error จริงแทนที่จะซ่อนเงียบๆ — ช่วยวินิจฉัยปัญหา RLS / ชื่อ table / สิทธิ์ */
+      console.error('[ICO] loadLog HTTP error:',r.status,rows);
+      t.innerHTML=`<div style="padding:14px;text-align:center;color:var(--red);font-size:11.5px;">โหลด log ไม่สำเร็จ (HTTP ${r.status})<br>${esc(rows&&(rows.message||rows.hint)||JSON.stringify(rows))}</div>`;
+      updateItlItmFromLog([]);updateBounceBanner([]);
+      return;
+    }
+    console.log('[ICO] tickets_log rows for',no,':',rows);
+    if(!Array.isArray(rows)||!rows.length){
+      t.innerHTML='<div style="padding:14px;text-align:center;color:var(--mute);font-size:12px;">ยังไม่มี log สำหรับ ticket นี้</div>';
+      updateItlItmFromLog([]);updateBounceBanner([]);
+      return;
+    }
     const rm={'MANAGER_APPROVE':'หัวหน้างาน','ICO_CHECK':'ICO','ICT_ACTION':'ICO/ช่าง','ITL_APPROVE':'ITL','IT_MGR_APPROVE':'IT Manager'};
     t.innerHTML=rows.map(r=>{
-      const sc=r.status==='APPROVED'?'var(--green)':r.status==='REJECTED'||r.status==='CANCELLED'?'var(--red)':'var(--sub)';
+      const isBounce=/BACK|REJECT/i.test(r.status||'');
+      const isApprove=/APPROVE|DONE/i.test(r.status||'')&&!isBounce;
+      const sc=isBounce?'var(--red)':isApprove?'var(--green)':'var(--sub)';
       const dt=r.created_at?fmtDT(r.created_at):'';
-      return`<div class="comment-item${!r.step_name?' system':''}"><div class="comment-meta"><span class="comment-who">${esc(r.action_by||'—')}</span><span class="comment-role">${rm[r.step_name]||r.step_name||''}</span><span style="font-size:9px;font-weight:700;color:${sc};">${r.status||''}</span><span class="comment-time">${dt}</span></div>${r.comment?`<div class="comment-text">${esc(r.comment)}</div>`:''}</div>`;
+      return`<div class="comment-item${!r.step_name?' system':''}${isBounce?' bounce':''}"><div class="comment-meta"><span class="comment-who">${esc(r.action_by||'—')}</span><span class="comment-role">${rm[r.step_name]||r.step_name||''}</span><span style="font-size:9px;font-weight:700;color:${sc};">${isBounce?'⛔ ':''}${r.status||''}</span><span class="comment-time">${dt}</span></div>${r.comment?`<div class="comment-text">${esc(r.comment)}</div>`:''}</div>`;
     }).join('');
-  }catch(e){}
+    updateItlItmFromLog(rows);
+    updateBounceBanner(rows);
+  }catch(e){
+    console.error('[ICO] loadLog exception:',e);
+    t.innerHTML=`<div style="padding:14px;text-align:center;color:var(--red);font-size:11.5px;">เกิดข้อผิดพลาด: ${esc(e.message)}</div>`;
+  }
+}
+
+/* ดึงผล ITL / IT MGR ล่าสุดจากประวัติ log — ไม่พึ่งพาแค่คอลัมน์ใน tickets table
+   เพราะบางระบบเขียนผลไว้ที่ tickets_log เท่านั้น ทำให้แท็บ "ผล ITL / ผล IT MGR" ว่างเปล่า */
+function updateItlItmFromLog(rows){
+  const itl=[...rows].reverse().find(r=>r.step_name==='ITL_APPROVE');
+  const itm=[...rows].reverse().find(r=>r.step_name==='IT_MGR_APPROVE');
+  if(itl){
+    document.getElementById('itl-name').textContent=itl.action_by||'—';
+    document.getElementById('itl-status').textContent=/BACK|REJECT/i.test(itl.status||'')?'⛔ ตีกลับ':(/APPROVE/i.test(itl.status||'')?'✅ อนุมัติ':(itl.status||'—'));
+    document.getElementById('itl-comment').textContent=itl.comment||'—';
+    const d=document.getElementById('itl-date');if(d)d.textContent=fmtDT(itl.created_at);
+  }
+  if(itm){
+    document.getElementById('itm-name').textContent=itm.action_by||'—';
+    document.getElementById('itm-status').textContent=/BACK|REJECT/i.test(itm.status||'')?'⛔ ตีกลับ':(/APPROVE/i.test(itm.status||'')?'✅ อนุมัติ':(itm.status||'—'));
+    document.getElementById('itm-comment').textContent=itm.comment||'—';
+    const d=document.getElementById('itm-date');if(d)d.textContent=fmtDT(itm.created_at);
+  }
+}
+
+/* แสดงแบนเนอร์แดงเมื่องานถูกตีกลับมาที่ ICO (จาก IT MGR หรือ ITL) พร้อมคอมเมนต์/วันที่/ชื่อผู้ตีกลับ */
+function updateBounceBanner(rows){
+  const banner=document.getElementById('bounceBanner');
+  if(!banner)return;
+  if(!currentTicket||!['ICO_WORK','ITL_WAIT','OPEN','MGR_WAIT'].includes(currentTicket.status)){banner.style.display='none';return;}
+  const bounce=[...rows].reverse().find(r=>/BACK|REJECT/i.test(r.status||''));
+  if(bounce){
+    banner.style.display='flex';
+    const fromLabel=bounce.step_name==='IT_MGR_APPROVE'?'IT Manager':(bounce.step_name==='ITL_APPROVE'?'ITL':'ทีมตรวจสอบ');
+    document.getElementById('bounceBannerText').textContent=`⛔ งานนี้ถูกตีกลับจาก ${fromLabel} — โดย ${bounce.action_by||'-'} เมื่อ ${fmtDT(bounce.created_at)}`;
+    document.getElementById('bounceBannerComment').textContent=bounce.comment?`เหตุผล: ${bounce.comment}`:'ไม่มีความเห็นเพิ่มเติม กรุณาตรวจสอบและแก้ไขงานอีกครั้ง';
+  }else{
+    banner.style.display='none';
+  }
 }
 
 function closeModal(){document.getElementById('workModal').classList.remove('open');currentTicket=null;currentSvc=null;icoFiles=[];}
@@ -1418,7 +1504,41 @@ async function uploadFiles(files,folder){
   }
   return urls;
 }
-function fLink(url){const n=decodeURIComponent(url.split('/').pop());return`<a class="glink" href="${esc(url)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(n)}</span><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>`;}
+function jsq(s){return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
+function fLink(url){
+  const n=decodeURIComponent(url.split('/').pop());
+  return`<a class="glink" href="javascript:void(0)" onclick="openFilePreview('${jsq(url)}','${jsq(n)}')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(n)}</span><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></a>`;
+}
+
+/* เปิดพรีวิวไฟล์ในหน้าเดียวกัน แทนการเปิดแท็บใหม่ที่มักถูกบังคับดาวน์โหลด
+   - รูปภาพ → แสดงตรงๆ
+   - PDF → ฝังด้วย <iframe> (เบราว์เซอร์แสดงตัวอย่างในตัวโดยไม่ดาวน์โหลด)
+   - Word/Excel/อื่นๆ → ใช้ Google Docs Viewer แสดงตัวอย่าง พร้อมปุ่มดาวน์โหลดสำรอง */
+function openFilePreview(url,name){
+  const ext=(name.split('.').pop()||'').toLowerCase();
+  document.getElementById('fpName').textContent=name;
+  document.getElementById('fpDownload').href=url;
+  const body=document.getElementById('fpBody');
+  body.innerHTML='';
+  if(['jpg','jpeg','png','gif','webp','svg','bmp'].includes(ext)){
+    body.style.background='#111';
+    body.innerHTML=`<img src="${esc(url)}" style="max-width:100%;max-height:100%;object-fit:contain;">`;
+  }else if(ext==='pdf'){
+    body.style.background='#525659';
+    body.innerHTML=`<iframe src="${esc(url)}" style="width:100%;height:100%;border:none;"></iframe>`;
+  }else if(['doc','docx','xls','xlsx','ppt','pptx'].includes(ext)){
+    body.style.background='#fff';
+    body.innerHTML=`<iframe src="https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true" style="width:100%;height:100%;border:none;"></iframe>`;
+  }else{
+    body.style.background='#fff';
+    body.innerHTML=`<div style="text-align:center;color:var(--sub);padding:30px;font-size:13px;">ไม่สามารถแสดงตัวอย่างไฟล์ประเภทนี้ได้<br>กรุณากด "ดาวน์โหลด" เพื่อเปิดไฟล์</div>`;
+  }
+  document.getElementById('filePreviewModal').style.display='flex';
+}
+function closeFilePreview(){
+  document.getElementById('filePreviewModal').style.display='none';
+  document.getElementById('fpBody').innerHTML='';
+}
 
 /* ═══ TABS ═══ */
 function switchTab(id,btn){
