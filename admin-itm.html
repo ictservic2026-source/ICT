@@ -311,6 +311,10 @@ textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(15,118,110,.1)
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
         ยกเลิกงาน
       </button>
+      <button class="btn-warn" onclick="doAction('BACK_TO_ICO')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>
+        ตีกลับ ICO
+      </button>
       <button class="btn-warn" onclick="doAction('BACK_TO_ITL')">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>
         ตีกลับ ITL
@@ -445,10 +449,10 @@ function setPriority(p){
 async function doAction(action){
   if(!currentTicket)return;
   const comment=document.getElementById('itm-comment').value.trim();
-  if((action==='CANCELLED'||action==='BACK_TO_ITL')&&!comment){showToast('กรุณาระบุเหตุผล','err');return;}
+  if((action==='CANCELLED'||action==='BACK_TO_ITL'||action==='BACK_TO_ICO')&&!comment){showToast('กรุณาระบุเหตุผล','err');return;}
   const mgrName=prompt('ชื่อ IT Manager:');
   if(!mgrName||!mgrName.trim()){showToast('กรุณาระบุชื่อก่อน','err');return;}
-  const statusMap={ITM_APPROVE:'ICO_FINAL',CANCELLED:'CANCELLED',BACK_TO_ITL:'ITL_WAIT'};
+  const statusMap={ITM_APPROVE:'ICO_FINAL',CANCELLED:'CANCELLED',BACK_TO_ITL:'ITL_WAIT',BACK_TO_ICO:'ICO_WORK'};
   const newStatus=statusMap[action]||'ICO_FINAL';
   const logStatus=action==='ITM_APPROVE'?'APPROVED':action==='CANCELLED'?'CANCELLED':'REJECTED';
   /* disable all action buttons */
@@ -465,12 +469,13 @@ async function doAction(action){
       })
     });
     if(!ticketRes.ok){const e=await ticketRes.text();throw new Error('อัปเดตสถานะไม่สำเร็จ: '+e);}
-    /* บันทึก log */
-    await fetch(LOG,{
+    /* บันทึก log — จุดนี้คือแหล่งข้อมูลจริงที่ ICO ใช้แสดงผล IT MGR ต้องเช็คว่าสำเร็จจริง */
+    const logRes=await fetch(LOG,{
       method:'POST',
       headers:{...HDR,'Content-Type':'application/json','Prefer':'return=minimal'},
       body:JSON.stringify({ticket_no:currentTicket.ticket_no,step_name:'IT_MGR_APPROVE',status:logStatus,action_by:mgrName.trim(),comment:comment||null})
     });
+    if(!logRes.ok){const le=await logRes.text();console.error('[ITM] บันทึก log ไม่สำเร็จ:',le);showToast('⚠️ อัปเดตสถานะสำเร็จ แต่บันทึกประวัติ (log) ไม่สำเร็จ: '+le,'err');}
     /* ── Make.com Webhook ── */
     try{
       await fetch('https://hook.us2.make.com/gjjomwjmrzwr2rnsu443vaq4omxqv8vc',{
@@ -496,7 +501,7 @@ async function doAction(action){
 })
       });
     }catch(wErr){console.warn('[Make webhook]',wErr);}
-    const msgs={ITM_APPROVE:'✅ อนุมัติแล้ว — แจ้ง ICO ปิดงาน',CANCELLED:'🚫 ยกเลิกงานแล้ว',BACK_TO_ITL:'↩ ตีกลับ ITL แล้ว'};
+    const msgs={ITM_APPROVE:'✅ อนุมัติแล้ว — แจ้ง ICO ปิดงาน',CANCELLED:'🚫 ยกเลิกงานแล้ว',BACK_TO_ITL:'↩ ตีกลับ ITL แล้ว',BACK_TO_ICO:'↩ ตีกลับ ICO แล้ว'};
     showToast(msgs[action]||'บันทึกแล้ว','ok');
     closeModal();await refreshTickets();
   }catch(e){
