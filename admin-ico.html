@@ -234,6 +234,13 @@ textarea{resize:vertical;min-height:72px;line-height:1.6;}
 .bounce-notice-text{font-size:13px;color:var(--red);font-weight:700;}
 .bounce-notice-sub{font-size:11.5px;color:#7F1D1D;margin-top:4px;line-height:1.5;white-space:pre-wrap;}
 .comment-item.bounce{background:var(--red-pale);border-left:3px solid var(--red);}
+.comment-item.internal{background:var(--purple-pale);border-left:3px solid var(--purple);}
+.log-filter-bar{display:flex;gap:6px;margin-bottom:10px;}
+.log-filter-btn{padding:6px 12px;border:1px solid var(--border);border-radius:20px;background:var(--white);font-family:'Sarabun',sans-serif;font-size:11.5px;color:var(--sub);cursor:pointer;transition:all .12s;}
+.log-filter-btn:hover{background:var(--field);}
+.log-filter-btn.active{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600;}
+.log-internal-check{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--sub);margin:-4px 0 8px;cursor:pointer;user-select:none;}
+.log-internal-check input{width:14px;height:14px;cursor:pointer;}
 
 /* close-work section */
 .close-box{background:linear-gradient(135deg,var(--green-pale),#ECFDF5);border:1.5px solid var(--green-border);border-radius:10px;padding:14px 16px;margin-bottom:14px;}
@@ -499,6 +506,17 @@ textarea{resize:vertical;min-height:72px;line-height:1.6;}
           </div>
         </div>
 
+        <!-- Survey Tracking: ตามงานว่า TK ไหนประเมินแล้ว/ยังไม่ได้ประเมิน -->
+        <div class="chart-card" style="margin-bottom:18px;">
+          <div class="chart-title">
+            📝 ติดตามแบบประเมินความพึงพอใจ (จากงานที่ปิดแล้วทั้งหมด)
+            <span id="sv-track-summary" style="font-size:10px;color:var(--mute);font-weight:500;">กำลังโหลด...</span>
+          </div>
+          <div id="sv-track-body" style="max-height:260px;overflow-y:auto;">
+            <div style="text-align:center;color:var(--mute);padding:16px;font-size:12px;">กำลังโหลด...</div>
+          </div>
+        </div>
+
         <!-- Recent 10 -->
         <div class="chart-card">
           <div class="chart-title">รายการล่าสุด</div>
@@ -618,6 +636,14 @@ textarea{resize:vertical;min-height:72px;line-height:1.6;}
         <div style="font-size:10px;color:var(--mute);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">รูปภาพประกอบ</div>
         <div class="gallery-grid" id="wm-imgs"></div>
       </div>
+      <!-- การอนุมัติของหัวหน้างานผู้แจ้ง -->
+      <div class="info-group" style="margin-top:4px;">
+        <div style="font-size:10px;color:var(--mute);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">✅ การอนุมัติของต้นสังกัดผู้แจ้ง</div>
+        <div class="info-row"><span class="info-key">อนุมัติโดย</span><span class="info-val" id="mgr_name">—</span></div>
+        <div class="info-row"><span class="info-key">ผลการอนุมัติ</span><span class="info-val" id="mgr_status">—</span></div>
+        <div class="info-row"><span class="info-key">วันที่/เวลา</span><span class="info-val" id="mgr_date">—</span></div>
+        <div class="info-row" style="flex-direction:column;gap:4px;"><span class="info-key" style="min-width:unset;">ความเห็นหัวหน้างาน</span><span class="info-val long" id="mgr_comment">—</span></div>
+      </div>
     </div>
 
     <!-- Tab: บันทึกงาน ICO -->
@@ -728,8 +754,17 @@ textarea{resize:vertical;min-height:72px;line-height:1.6;}
 
     <!-- Tab: Log -->
     <div class="tab-pane" id="t-log">
+      <div class="log-filter-bar">
+        <button class="log-filter-btn active" data-f="all" onclick="setLogFilter('all',this)">ทั้งหมด</button>
+        <button class="log-filter-btn" data-f="history" onclick="setLogFilter('history',this)">📋 ประวัติระบบ</button>
+        <button class="log-filter-btn" data-f="note" onclick="setLogFilter('note',this)">💬 คุยกันในทีม</button>
+      </div>
       <div class="comment-thread" id="logThread"><div style="padding:16px;text-align:center;color:var(--mute);font-size:12px;">กำลังโหลด...</div></div>
       <div class="form-row"><label>เพิ่มความเห็น</label><textarea id="newComment" rows="2" placeholder="พิมพ์ความเห็น..."></textarea></div>
+      <label class="log-internal-check">
+        <input type="checkbox" id="commentInternal">
+        🔒 บันทึกเป็นข้อความคุยกันภายในทีม ICT เท่านั้น (ไม่ใช่ผลตรวจสอบ/อนุมัติ)
+      </label>
       <button class="btn-primary btn-sm" onclick="addComment()">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         ส่ง
@@ -820,6 +855,8 @@ let chartS=null, chartC=null, chartM=null;
 async function refreshAll(){
   await fetchTickets();
   buildDashboard();
+  renderTable();          // เดิมไม่มีบรรทัดนี้ — ตอนอยู่หน้า "รายการ" แล้วกดรีเฟรช ตารางจะไม่ถูกวาดใหม่เลย (บั๊กที่ทำให้กดแล้วไม่มีอะไรเปลี่ยน)
+  loadSurveyTracking();
 }
 
 async function fetchTickets(){
@@ -1003,6 +1040,55 @@ async function loadSurvey(month){
   }catch(e){console.warn('loadSurvey ICO:',e);}
 }
 
+/* ═══ SURVEY TRACKING ═══
+   ดึงรายการ ticket_no ทั้งหมดที่มีการประเมินแล้วจาก ticket_survey มาเทียบกับงานที่ DONE ทั้งหมด
+   เพื่อให้เห็นว่า TK ไหนยังไม่ได้ประเมิน จะได้ตามงานถูก — ไม่ผูกกับตัวกรองเดือน เพื่อให้เห็นภาพรวมค้างสะสมทั้งหมด */
+async function loadSurveyTracking(){
+  const body=document.getElementById('sv-track-body');
+  const summary=document.getElementById('sv-track-summary');
+  if(!body||!summary)return;
+  try{
+    const doneTickets=allTickets.filter(t=>t.status==='DONE');
+    if(!doneTickets.length){
+      summary.textContent='ยังไม่มีงานที่ปิดแล้ว';
+      body.innerHTML='<div style="text-align:center;color:var(--mute);padding:16px;font-size:12px;">ยังไม่มีงานที่ปิดแล้ว</div>';
+      return;
+    }
+    const r=await fetch(`${SURV}?select=ticket_no&limit=2000`,{headers:HDR});
+    if(!r.ok){throw new Error('HTTP '+r.status);}
+    const rows=await r.json();
+    const survSet=new Set(Array.isArray(rows)?rows.filter(s=>s.ticket_no).map(s=>s.ticket_no):[]);
+    const evaluated=doneTickets.filter(t=>survSet.has(t.ticket_no));
+    const pending=doneTickets.filter(t=>!survSet.has(t.ticket_no))
+      .sort((a,b)=>new Date(a.closed_at||a.request_date||0)-new Date(b.closed_at||b.request_date||0)); // ค้างนานสุดอยู่บนสุด
+    summary.textContent=`✅ ประเมินแล้ว ${evaluated.length} ราย   ·   ⏳ รอประเมิน ${pending.length} ราย`;
+    if(!pending.length){
+      body.innerHTML='<div style="text-align:center;color:var(--green);padding:16px;font-size:12px;">🎉 ประเมินครบทุกรายการแล้ว</div>';
+      return;
+    }
+    body.innerHTML=`<table class="mini-table">
+      <thead><tr><th>เลขที่</th><th>ผู้แจ้ง</th><th>แผนก</th><th style="width:150px;">วันที่ปิดงาน</th><th style="width:70px;">ค้างมา</th></tr></thead>
+      <tbody>${pending.map(t=>{
+        const closeDate=t.closed_at||t.request_date;
+        const days=closeDate?Math.max(0,Math.round((Date.now()-new Date(closeDate))/86400000)):null;
+        const dayLabel=days===null?'—':`${days} วัน`;
+        const dayColor=days!==null&&days>=7?'var(--red)':(days!==null&&days>=3?'var(--amber)':'var(--sub)');
+        return`<tr style="cursor:pointer;" onclick="switchView('list');setFilter('DONE');activeSB(document.querySelectorAll('.sb-item')[5]||document.querySelector('.sb-item'));openModal('${esc(t.ticket_no)}')">
+          <td><span class="td-no">${esc(t.ticket_no)}</span></td>
+          <td><span class="td-name">${esc(t.requester_name||'—')}</span></td>
+          <td class="td-sub">${esc(t.department||'—')}</td>
+          <td class="td-date">${fmtD(closeDate)}</td>
+          <td style="font-weight:700;color:${dayColor};">${dayLabel}</td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table>`;
+  }catch(e){
+    console.warn('loadSurveyTracking:',e);
+    summary.textContent='โหลดข้อมูลไม่สำเร็จ';
+    body.innerHTML='<div style="text-align:center;color:var(--red);padding:16px;font-size:11.5px;">โหลดข้อมูลติดตามแบบประเมินไม่สำเร็จ</div>';
+  }
+}
+
 function loadMetrics(data){
   const done=data.filter(t=>t.status==='DONE');
   document.getElementById('m-cancel').textContent=data.filter(t=>t.status==='CANCELLED').length;
@@ -1083,6 +1169,9 @@ function buildStatusBadge(s){
 async function openModal(no){
   icoFiles=[];
   document.getElementById('icoFileList').innerHTML='';
+  logFilterMode='all';
+  document.querySelectorAll('.log-filter-btn').forEach(b=>b.classList.toggle('active',b.dataset.f==='all'));
+  if(document.getElementById('commentInternal'))document.getElementById('commentInternal').checked=false;
   currentTicket=allTickets.find(t=>t.ticket_no===no);
   if(!currentTicket)return;
   const T=currentTicket;
@@ -1114,6 +1203,8 @@ async function openModal(no){
   document.getElementById('itm-status').textContent=T.itm_status==='ITM_APPROVE'?'✅ อนุมัติ':T.itm_status||'—';
   document.getElementById('itm-priority').textContent=T.priority||'—';
   document.getElementById('itm-comment').textContent=T.itm_comment||'—';
+  // เคลียร์ข้อมูลหัวหน้างานก่อน (จะถูกเติมจาก log ใน updateItlItmFromLog หลัง loadLog)
+  ['mgr_name','mgr_status','mgr_date','mgr_comment'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent='—';});
   // itm notice
   const itmNotice=document.getElementById('itm-notice');
   if(T.status==='ICO_FINAL'){itmNotice.style.display='flex';document.getElementById('itm-notice-comment').textContent=T.itm_comment?`ความเห็น IT MGR: ${T.itm_comment}`:'';} else itmNotice.style.display='none';
@@ -1188,6 +1279,9 @@ async function loadSvc(no){
   }catch(e){}
 }
 
+let currentLogRows=[];
+let logFilterMode='all';
+
 async function loadLog(no){
   const t=document.getElementById('logThread');
   t.innerHTML='<div style="padding:14px;text-align:center;color:var(--mute);font-size:12px;">กำลังโหลด...</div>';
@@ -1198,29 +1292,59 @@ async function loadLog(no){
       /* แสดง error จริงแทนที่จะซ่อนเงียบๆ — ช่วยวินิจฉัยปัญหา RLS / ชื่อ table / สิทธิ์ */
       console.error('[ICO] loadLog HTTP error:',r.status,rows);
       t.innerHTML=`<div style="padding:14px;text-align:center;color:var(--red);font-size:11.5px;">โหลด log ไม่สำเร็จ (HTTP ${r.status})<br>${esc(rows&&(rows.message||rows.hint)||JSON.stringify(rows))}</div>`;
+      currentLogRows=[];
       updateItlItmFromLog([]);updateBounceBanner([]);
       return;
     }
     console.log('[ICO] tickets_log rows for',no,':',rows);
-    if(!Array.isArray(rows)||!rows.length){
-      t.innerHTML='<div style="padding:14px;text-align:center;color:var(--mute);font-size:12px;">ยังไม่มี log สำหรับ ticket นี้</div>';
-      updateItlItmFromLog([]);updateBounceBanner([]);
-      return;
-    }
-    const rm={'MANAGER_APPROVE':'หัวหน้างาน','ICO_CHECK':'ICO','ICT_ACTION':'ICO/ช่าง','ITL_APPROVE':'ITL','IT_MGR_APPROVE':'IT Manager'};
-    t.innerHTML=rows.map(r=>{
-      const isBounce=/BACK|REJECT/i.test(r.status||'');
-      const isApprove=/APPROVE|DONE/i.test(r.status||'')&&!isBounce;
-      const sc=isBounce?'var(--red)':isApprove?'var(--green)':'var(--sub)';
-      const dt=r.created_at?fmtDT(r.created_at):'';
-      return`<div class="comment-item${!r.step_name?' system':''}${isBounce?' bounce':''}"><div class="comment-meta"><span class="comment-who">${esc(r.action_by||'—')}</span><span class="comment-role">${rm[r.step_name]||r.step_name||''}</span><span style="font-size:9px;font-weight:700;color:${sc};">${isBounce?'⛔ ':''}${r.status||''}</span><span class="comment-time">${dt}</span></div>${r.comment?`<div class="comment-text">${esc(r.comment)}</div>`:''}</div>`;
-    }).join('');
-    updateItlItmFromLog(rows);
-    updateBounceBanner(rows);
+    currentLogRows=Array.isArray(rows)?rows:[];
+    renderLogThread();
+    updateItlItmFromLog(currentLogRows);
+    updateBounceBanner(currentLogRows);
   }catch(e){
     console.error('[ICO] loadLog exception:',e);
     t.innerHTML=`<div style="padding:14px;text-align:center;color:var(--red);font-size:11.5px;">เกิดข้อผิดพลาด: ${esc(e.message)}</div>`;
+    currentLogRows=[];
   }
+}
+
+/* สลับมุมมอง Log: ทั้งหมด / ประวัติระบบ (การเปลี่ยนสถานะ-อนุมัติ-ตีกลับ) / คุยกันในทีม (COMMENT, INTERNAL_NOTE) */
+function setLogFilter(mode,btn){
+  logFilterMode=mode;
+  document.querySelectorAll('.log-filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  renderLogThread();
+}
+
+function renderLogThread(){
+  const t=document.getElementById('logThread');
+  if(!t)return;
+  const rows=currentLogRows;
+  if(!rows.length){
+    t.innerHTML='<div style="padding:14px;text-align:center;color:var(--mute);font-size:12px;">ยังไม่มี log สำหรับ ticket นี้</div>';
+    return;
+  }
+  const isNoteStatus=s=>s==='COMMENT'||s==='INTERNAL_NOTE';
+  const filtered=rows.filter(r=>{
+    if(logFilterMode==='history')return !isNoteStatus(r.status);
+    if(logFilterMode==='note')return isNoteStatus(r.status);
+    return true;
+  });
+  if(!filtered.length){
+    t.innerHTML=`<div style="padding:14px;text-align:center;color:var(--mute);font-size:12px;">${logFilterMode==='history'?'ยังไม่มีประวัติระบบ':'ยังไม่มีข้อความคุยกันในทีม'}</div>`;
+    return;
+  }
+  const rm={'MANAGER_APPROVE':'หัวหน้างาน','ICO_CHECK':'ICO','ICT_ACTION':'ICO/ช่าง','ITL_APPROVE':'ITL','IT_MGR_APPROVE':'IT Manager'};
+  t.innerHTML=filtered.map(r=>{
+    const isBounce=/BACK|REJECT/i.test(r.status||'');
+    const isInternal=r.status==='INTERNAL_NOTE';
+    const isApprove=/APPROVE|DONE/i.test(r.status||'')&&!isBounce;
+    const sc=isBounce?'var(--red)':isInternal?'var(--purple)':isApprove?'var(--green)':'var(--sub)';
+    const dt=r.created_at?fmtDT(r.created_at):'ไม่ระบุวันที่';
+    const who=r.action_by||'ไม่ระบุผู้บันทึก';
+    const statusLabel=isInternal?'🔒 คุยในทีม':(r.status==='COMMENT'?'💬 ความเห็น':(r.status||''));
+    return`<div class="comment-item${!r.step_name?' system':''}${isBounce?' bounce':''}${isInternal?' internal':''}"><div class="comment-meta"><span class="comment-who">${esc(who)}</span><span class="comment-role">${rm[r.step_name]||r.step_name||''}</span><span style="font-size:9px;font-weight:700;color:${sc};">${isBounce?'⛔ ':''}${esc(statusLabel)}</span><span class="comment-time">🕐 ${dt}</span></div>${r.comment?`<div class="comment-text">${esc(r.comment)}</div>`:''}</div>`;
+  }).join('');
 }
 
 /* ดึงผล ITL / IT MGR ล่าสุดจากประวัติ log — ไม่พึ่งพาแค่คอลัมน์ใน tickets table
@@ -1228,17 +1352,30 @@ async function loadLog(no){
 function updateItlItmFromLog(rows){
   const itl=[...rows].reverse().find(r=>r.step_name==='ITL_APPROVE');
   const itm=[...rows].reverse().find(r=>r.step_name==='IT_MGR_APPROVE');
+  const mgr=[...rows].reverse().find(r=>r.step_name==='MANAGER_APPROVE');
   if(itl){
-    document.getElementById('itl-name').textContent=itl.action_by||'—';
+    document.getElementById('itl-name').textContent=itl.action_by||'ไม่ระบุชื่อผู้บันทึก';
     document.getElementById('itl-status').textContent=/BACK|REJECT/i.test(itl.status||'')?'⛔ ตีกลับ':(/APPROVE/i.test(itl.status||'')?'✅ อนุมัติ':(itl.status||'—'));
-    document.getElementById('itl-comment').textContent=itl.comment||'—';
+    document.getElementById('itl-comment').textContent=itl.comment||'— (ไม่มีความเห็นเพิ่มเติม)';
     const d=document.getElementById('itl-date');if(d)d.textContent=fmtDT(itl.created_at);
   }
   if(itm){
-    document.getElementById('itm-name').textContent=itm.action_by||'—';
+    document.getElementById('itm-name').textContent=itm.action_by||'ไม่ระบุชื่อผู้บันทึก';
     document.getElementById('itm-status').textContent=/BACK|REJECT/i.test(itm.status||'')?'⛔ ตีกลับ':(/APPROVE/i.test(itm.status||'')?'✅ อนุมัติ':(itm.status||'—'));
-    document.getElementById('itm-comment').textContent=itm.comment||'—';
+    document.getElementById('itm-comment').textContent=itm.comment||'— (ไม่มีความเห็นเพิ่มเติม)';
     const d=document.getElementById('itm-date');if(d)d.textContent=fmtDT(itm.created_at);
+  }
+  // หัวหน้างานผู้แจ้ง — ก่อนหน้านี้ไม่เคยแสดงส่วนนี้เลย
+  if(mgr){
+    document.getElementById('mgr_name').textContent=mgr.action_by||'ไม่ระบุชื่อผู้อนุมัติ';
+    document.getElementById('mgr_status').textContent=/BACK|REJECT/i.test(mgr.status||'')?'⛔ ตีกลับ':(/APPROVE/i.test(mgr.status||'')?'✅ อนุมัติ':(mgr.status||'—'));
+    document.getElementById('mgr_comment').textContent=mgr.comment||'— (ไม่มีความเห็นเพิ่มเติม)';
+    const d=document.getElementById('mgr_date');if(d)d.textContent=fmtDT(mgr.created_at);
+  }else{
+    document.getElementById('mgr_name').textContent='ยังไม่มีการอนุมัติจากหัวหน้างาน';
+    document.getElementById('mgr_status').textContent='—';
+    document.getElementById('mgr_comment').textContent='—';
+    const d=document.getElementById('mgr_date');if(d)d.textContent='—';
   }
 }
 
@@ -1331,11 +1468,16 @@ async function saveService(sendToITL){
     if(!ticketRes.ok){const e=await ticketRes.text();throw new Error('อัปเดตสถานะไม่สำเร็จ: '+e);}
 
     /* 4. บันทึก log */
-    await fetch(LOG,{
+    const logRes=await fetch(LOG,{
       method:'POST',
       headers:{...HDR,'Content-Type':'application/json','Prefer':'return=minimal'},
       body:JSON.stringify({ticket_no:ticketNo,step_name:'ICT_ACTION',status:sendToITL?'APPROVED':'DRAFT',action_by:staff,comment:logComment})
     });
+    if(!logRes.ok){
+      const le=await logRes.text();
+      console.error('[ICO] เขียน log ไม่สำเร็จ:',logRes.status,le);
+      showToast(`⚠️ บันทึกงานสำเร็จ แต่เขียน log ไม่สำเร็จ (HTTP ${logRes.status}) — ตรวจสอบชื่อตาราง tickets_log`,'err');
+    }
 
     icoFiles=[];document.getElementById('icoFileList').innerHTML='';
     /* ── Make.com Webhook ── */
@@ -1408,11 +1550,16 @@ async function closeWork(){
     if(!doneRes.ok){const e=await doneRes.text();throw new Error('ปิดงานไม่สำเร็จ: '+e);}
 
     /* 4. log */
-    await fetch(LOG,{
+    const logRes=await fetch(LOG,{
       method:'POST',
       headers:{...HDR,'Content-Type':'application/json','Prefer':'return=minimal'},
       body:JSON.stringify({ticket_no:ticketNo,step_name:'ICT_ACTION',status:'DONE',action_by:staff,comment:`ปิดงาน — ${summary}`})
     });
+    if(!logRes.ok){
+      const le=await logRes.text();
+      console.error('[ICO] เขียน log ไม่สำเร็จ:',logRes.status,le);
+      showToast(`⚠️ ปิดงานสำเร็จ แต่เขียน log ไม่สำเร็จ (HTTP ${logRes.status}) — ตรวจสอบชื่อตาราง tickets_log`,'err');
+    }
 
     /* ── Make.com Webhook ── */
     try{
@@ -1474,12 +1621,20 @@ async function addComment(){
   if(!currentTicket)return;
   const text=document.getElementById('newComment').value.trim();
   if(!text){showToast('กรุณาพิมพ์ความเห็นก่อน','err');return;}
+  const isInternal=document.getElementById('commentInternal')?.checked;
   try{
     const staff=document.getElementById('f-staff').value.trim()||'ICO';
-    await fetch(LOG,{method:'POST',headers:{...HDR,'Content-Type':'application/json'},body:JSON.stringify({ticket_no:currentTicket.ticket_no,step_name:'ICO_CHECK',status:'COMMENT',action_by:staff,comment:text})});
+    const logRes=await fetch(LOG,{method:'POST',headers:{...HDR,'Content-Type':'application/json'},body:JSON.stringify({ticket_no:currentTicket.ticket_no,step_name:'ICO_CHECK',status:isInternal?'INTERNAL_NOTE':'COMMENT',action_by:staff,comment:text})});
+    if(!logRes.ok){
+      const le=await logRes.text();
+      console.error('[ICO] เขียน log ไม่สำเร็จ:',logRes.status,le);
+      showToast(`❌ บันทึกไม่สำเร็จ (HTTP ${logRes.status}) — ตรวจสอบชื่อตาราง tickets_log ใน Supabase`,'err');
+      return;
+    }
     document.getElementById('newComment').value='';
+    if(document.getElementById('commentInternal'))document.getElementById('commentInternal').checked=false;
     await loadLog(currentTicket.ticket_no);
-    showToast('✅ เพิ่มความเห็นแล้ว','ok');
+    showToast(isInternal?'✅ บันทึกข้อความภายในทีมแล้ว':'✅ เพิ่มความเห็นแล้ว','ok');
   }catch(e){showToast('❌ '+e.message,'err');}
 }
 
@@ -1550,15 +1705,17 @@ function switchTab(id,btn){
 
 /* ═══ UTILS ═══ */
 function fmtD(s){if(!s)return'—';return new Date(s).toLocaleDateString('th-TH',{year:'numeric',month:'long',day:'numeric'});}
+/* รูปแบบวันที่-เวลาแบบไทย: dd/mm/พ.ศ. (4 หลัก) hh:mm น. เช่น 03/07/2569 14:30 น. */
 function fmtDT(s){
   if(!s)return'—';
   const d=new Date(s);
+  if(isNaN(d.getTime()))return'—';
   const day=String(d.getDate()).padStart(2,'0');
   const mon=String(d.getMonth()+1).padStart(2,'0');
-  const yr=String(d.getFullYear()).slice(2);
+  const yrBE=d.getFullYear()+543;              // ปี พ.ศ.
   const hr=String(d.getHours()).padStart(2,'0');
   const mn=String(d.getMinutes()).padStart(2,'0');
-  return `${day}/${mon}/${yr} ${hr}:${mn}`;
+  return `${day}/${mon}/${yrBE} ${hr}:${mn} น.`;
 }
 function toArr(v){if(!v)return[];if(Array.isArray(v))return v.filter(Boolean);if(typeof v==='string'&&v.startsWith('{'))return v.slice(1,-1).split(',').map(s=>s.trim().replace(/^"|"$/g,'')).filter(Boolean);return[v];}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
