@@ -580,7 +580,7 @@ async function doAction(action) {
     }
 
     // INSERT tickets_log
-    await fetch(LOG, {
+    const rLog = await fetch(LOG, {
       method: 'POST',
       headers: { ...HDR, 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -591,6 +591,9 @@ async function doAction(action) {
         comment:    comment || null
       })
     });
+    if (!rLog.ok) {
+      showToast(`⚠️ บันทึกสำเร็จ แต่เขียน log ไม่สำเร็จ (HTTP ${rLog.status})`, true);
+    }
 
     /* ── Make.com Webhook ── */
     try{
