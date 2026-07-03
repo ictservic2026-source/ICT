@@ -576,7 +576,7 @@ async function submitSurvey(){
       score_q3:      scores[3],
       score_q4:      scores[4],
       score_q5:      scores[5],
-      score_total:   total,
+      /* score_total เป็น Generated Column ใน DB (คำนวณอัตโนมัติจาก q1-q5) ห้ามส่งค่าเข้ามาตรงๆ */
       chk_resolved:  chkState.c1,
       chk_explained: chkState.c2,
       comment:       document.getElementById('sv-comment').value.trim()||null,
