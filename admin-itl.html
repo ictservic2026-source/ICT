@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ICT Admin — ITL อนุมัติ</title>
+<title>ICT Admin — IT Manager</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -15,17 +15,16 @@
   --amber:#D97706;--amber-pale:#FFFBEB;--amber-border:#FDE68A;
   --red:#DC2626;--red-pale:#FEF2F2;--red-border:#FECACA;
   --purple:#7C3AED;--purple-pale:#F5F3FF;--purple-border:#DDD6FE;
-  --orange:#EA580C;--orange-pale:#FFF7ED;--orange-border:#FED7AA;
   --teal:#0F766E;--teal-pale:#F0FDFA;--teal-border:#99F6E4;
 }
 html,body{height:100%;background:var(--bg);}
 body{font-family:'Sarabun',sans-serif;color:var(--ink);display:flex;flex-direction:column;}
 .nav{background:var(--ink);height:56px;display:flex;align-items:center;padding:0 24px;gap:16px;flex-shrink:0;}
-.nav-logo{width:34px;height:34px;background:var(--orange);border-radius:8px;display:flex;align-items:center;justify-content:center;}
+.nav-logo{width:34px;height:34px;background:var(--teal);border-radius:8px;display:flex;align-items:center;justify-content:center;}
 .nav-logo svg{width:18px;height:18px;}
 .nav-title{font-family:'Inter',sans-serif;font-size:14px;font-weight:700;color:#fff;}
 .nav-sub{font-size:11px;color:#6B7280;margin-top:1px;}
-.nav-badge{font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;padding:4px 10px;border-radius:20px;background:rgba(234,88,12,.2);color:#FDBA74;border:1px solid rgba(234,88,12,.3);}
+.nav-badge{font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;padding:4px 10px;border-radius:20px;background:rgba(15,118,110,.25);color:#5EEAD4;border:1px solid rgba(15,118,110,.4);}
 .nav-dash-link{margin-left:auto;display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;background:rgba(255,255,255,.08);color:#fff;font-family:'Sarabun',sans-serif;font-size:12px;font-weight:600;text-decoration:none;transition:background .12s;}
 .nav-dash-link:hover{background:rgba(255,255,255,.16);}
 .nav-dash-link svg{width:14px;height:14px;stroke:currentColor;flex-shrink:0;}
@@ -35,10 +34,10 @@ body{font-family:'Sarabun',sans-serif;color:var(--ink);display:flex;flex-directi
 .sb-section{padding:16px 12px 8px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);}
 .sb-item{display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:8px;margin:2px 8px;cursor:pointer;font-size:13px;color:var(--sub);transition:all .12s;}
 .sb-item:hover{background:var(--field);color:var(--ink);}
-.sb-item.active{background:var(--orange-pale);color:var(--orange);font-weight:600;}
+.sb-item.active{background:var(--teal-pale);color:var(--teal);font-weight:600;}
 .sb-item svg{width:16px;height:16px;stroke:currentColor;flex-shrink:0;}
-.sb-badge{margin-left:auto;background:var(--orange);color:#fff;border-radius:10px;font-size:10px;font-weight:700;padding:1px 7px;font-family:'Inter',sans-serif;}
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+.sb-badge{margin-left:auto;background:var(--teal);color:#fff;border-radius:10px;font-size:10px;font-weight:700;padding:1px 7px;font-family:'Inter',sans-serif;}
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:20px;}
 .stat-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px 18px;}
 .stat-label{font-size:11px;color:var(--sub);font-weight:500;margin-bottom:6px;}
 .stat-value{font-family:'Inter',sans-serif;font-size:28px;font-weight:700;color:var(--ink);}
@@ -49,61 +48,65 @@ body{font-family:'Sarabun',sans-serif;color:var(--ink);display:flex;flex-directi
 .search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:15px;height:15px;stroke:var(--mute);}
 .search-input{width:100%;padding:8px 10px 8px 32px;border:1px solid var(--border);border-radius:8px;font-family:'Sarabun',sans-serif;font-size:13px;background:var(--white);outline:none;color:var(--ink);}
 .filter-select{padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:'Sarabun',sans-serif;font-size:13px;background:var(--white);color:var(--ink);cursor:pointer;outline:none;}
-.btn-primary{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;background:var(--orange);color:#fff;border:none;border-radius:8px;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .12s;}
-.btn-primary:hover{background:#C2410C;}
+.btn-primary{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;background:var(--teal);color:#fff;border:none;border-radius:8px;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .12s;}
+.btn-primary:hover{background:#0F5549;}
 .btn-primary svg{width:15px;height:15px;stroke:#fff;}
 .table-wrap{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
 table{width:100%;border-collapse:collapse;table-layout:fixed;}
 thead th{background:var(--field);padding:11px 14px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);border-bottom:1px solid var(--border);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 tbody tr{border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;}
 tbody tr:last-child{border-bottom:none;}
-tbody tr:hover{background:#FFF7ED;}
+tbody tr:hover{background:var(--teal-pale);}
 tbody td{padding:12px 14px;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.td-no{font-family:'Inter',sans-serif;font-weight:600;color:var(--orange);font-size:12px;}
+.td-no{font-family:'Inter',sans-serif;font-weight:600;color:var(--teal);font-size:12px;}
 .td-name{font-weight:600;}
 .td-date{font-size:12px;color:var(--sub);font-family:'Inter',sans-serif;}
 .status{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap;font-family:'Inter',sans-serif;}
-.s-itl{background:var(--orange-pale);color:var(--orange);border:1px solid var(--orange-border);}
-.s-itm{background:var(--blue-pale);color:var(--blue);border:1px solid var(--blue-border);}
+.s-itm{background:var(--teal-pale);color:var(--teal);border:1px solid var(--teal-border);}
 .s-done{background:var(--green-pale);color:var(--green);border:1px solid var(--green-border);}
-.s-back{background:var(--amber-pale);color:var(--amber);border:1px solid var(--amber-border);}
 .s-cancel{background:var(--red-pale);color:var(--red);border:1px solid var(--red-border);}
+.s-back{background:var(--amber-pale);color:var(--amber);border:1px solid var(--amber-border);}
 .btn-row{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;border:1px solid;cursor:pointer;white-space:nowrap;font-family:'Sarabun',sans-serif;transition:all .12s;}
-.btn-review{color:var(--orange);border-color:var(--orange-border);background:var(--orange-pale);}
-.btn-review:hover{background:var(--orange);color:#fff;}
+.btn-review{color:var(--teal);border-color:var(--teal-border);background:var(--teal-pale);}
+.btn-review:hover{background:var(--teal);color:#fff;}
+/* Modal */
 .modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:flex-start;justify-content:center;padding:24px 12px;overflow-y:auto;}
 .modal-backdrop.open{display:flex;}
-.modal{background:var(--white);border-radius:16px;width:100%;max-width:860px;margin:auto;border:1px solid var(--border);overflow:hidden;}
+.modal{background:var(--white);border-radius:16px;width:100%;max-width:900px;margin:auto;border:1px solid var(--border);overflow:hidden;}
 .modal-hd{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border);background:var(--field);}
 .modal-title{font-size:16px;font-weight:700;color:var(--ink);}
-.modal-close{background:none;border:none;cursor:pointer;padding:4px;border-radius:6px;color:var(--sub);}
-.modal-close svg{width:18px;height:18px;stroke:currentColor;}
+.modal-close{background:none;border:none;cursor:pointer;padding:4px;border-radius:6px;}
+.modal-close svg{width:18px;height:18px;stroke:var(--sub);}
 .modal-foot{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:10px;flex-wrap:wrap;background:var(--field);}
 .tab-bar{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:16px;}
 .tab-btn{padding:10px 16px;border:none;background:none;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:500;color:var(--sub);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .12s;}
-.tab-btn.active{color:var(--orange);border-bottom-color:var(--orange);font-weight:700;}
+.tab-btn.active{color:var(--teal);border-bottom-color:var(--teal);font-weight:700;}
 .tab-pane{display:none;padding:0 24px 20px;}
 .tab-pane.active{display:block;}
 .info-group{background:var(--field);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:12px;}
 .info-row{display:flex;gap:8px;margin-bottom:8px;}
 .info-row:last-child{margin-bottom:0;}
-.info-key{font-size:11px;color:var(--sub);min-width:130px;flex-shrink:0;padding-top:1px;}
+.info-key{font-size:11px;color:var(--sub);min-width:140px;flex-shrink:0;padding-top:1px;}
 .info-val{font-size:13px;color:var(--ink);font-weight:500;flex:1;word-break:break-word;}
 .timeline{display:flex;gap:0;margin:16px 24px 20px;}
 .tl-step{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;}
 .tl-step:not(:last-child)::after{content:'';position:absolute;top:14px;left:50%;width:100%;height:2px;background:var(--border);}
 .tl-step.done::after{background:var(--green);}
-.tl-dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);background:var(--white);display:flex;align-items:center;justify-content:center;position:relative;z-index:1;font-size:11px;font-weight:700;font-family:'Inter',sans-serif;color:var(--mute);}
+.tl-dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);background:var(--white);display:flex;align-items:center;justify-content:center;position:relative;z-index:1;font-size:10px;font-weight:700;font-family:'Inter',sans-serif;color:var(--mute);}
 .tl-step.done .tl-dot{background:var(--green);border-color:var(--green);color:#fff;}
-.tl-step.active .tl-dot{background:var(--orange-pale);border-color:var(--orange);color:var(--orange);}
+.tl-step.active .tl-dot{background:var(--teal-pale);border-color:var(--teal);color:var(--teal);}
 .tl-label{font-size:10px;color:var(--sub);margin-top:5px;text-align:center;line-height:1.3;}
 .tl-step.done .tl-label{color:var(--green);font-weight:600;}
-.tl-step.active .tl-label{color:var(--orange);font-weight:600;}
+.tl-step.active .tl-label{color:var(--teal);font-weight:600;}
 label{display:block;font-size:12px;font-weight:600;color:var(--sub);margin-bottom:4px;}
-textarea,input[type=text]{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-family:'Sarabun',sans-serif;font-size:13px;color:var(--ink);background:var(--white);outline:none;transition:border-color .15s;}
-textarea:focus,input:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(234,88,12,.1);}
-textarea{resize:vertical;min-height:90px;}
+textarea{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-family:'Sarabun',sans-serif;font-size:13px;color:var(--ink);background:var(--white);outline:none;transition:border-color .15s;resize:vertical;min-height:90px;}
+textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(15,118,110,.1);}
 .form-row{margin-bottom:14px;padding:0 24px;}
+.priority-row{display:flex;gap:8px;margin-bottom:14px;padding:0 24px;}
+.priority-btn{flex:1;padding:10px 8px;border:1.5px solid var(--border);border-radius:8px;background:var(--white);font-family:'Sarabun',sans-serif;font-size:12px;font-weight:600;cursor:pointer;text-align:center;transition:all .12s;color:var(--sub);}
+.priority-btn.active-low{border-color:var(--green);background:var(--green-pale);color:var(--green);}
+.priority-btn.active-med{border-color:var(--amber);background:var(--amber-pale);color:var(--amber);}
+.priority-btn.active-high{border-color:var(--red);background:var(--red-pale);color:var(--red);}
 .btn-success{background:var(--green);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .12s;}
 .btn-success:hover{background:#166534;}
 .btn-danger{background:var(--red-pale);color:var(--red);border:1.5px solid var(--red-border);border-radius:8px;padding:10px 20px;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .12s;}
@@ -122,8 +125,12 @@ textarea{resize:vertical;min-height:90px;}
 .comment-time{font-size:10px;color:var(--mute);margin-left:auto;font-family:'Inter',sans-serif;}
 .comment-text{font-size:13px;color:var(--ink);line-height:1.6;}
 .glink{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--field);border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--ink);text-decoration:none;margin-bottom:6px;transition:background .12s;}
-.glink:hover{background:var(--orange-pale);}
-.glink svg{width:14px;height:14px;stroke:var(--orange);flex-shrink:0;}
+.glink:hover{background:var(--teal-pale);}
+.glink svg{width:14px;height:14px;stroke:var(--teal);flex-shrink:0;}
+/* cost summary box */
+.cost-box{background:linear-gradient(135deg,var(--teal-pale),var(--blue-pale));border:1px solid var(--teal-border);border-radius:10px;padding:16px 20px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;}
+.cost-label{font-size:12px;color:var(--teal);font-weight:600;}
+.cost-val{font-family:'Inter',sans-serif;font-size:24px;font-weight:700;color:var(--teal);}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--ink);color:#fff;padding:10px 20px;border-radius:10px;font-size:13px;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;z-index:400;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .toast.ok{background:var(--green);}
@@ -136,68 +143,74 @@ textarea{resize:vertical;min-height:90px;}
 </head>
 <body>
 <nav class="nav">
-  <div class="nav-logo"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+  <div class="nav-logo"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
   <div><div class="nav-title">ICT Service Desk</div><div class="nav-sub">NISSEI TRADING (THAILAND)</div></div>
   <a href="dashboard.html" class="nav-dash-link">
     <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="12" width="4" height="9"/><rect x="10" y="6" width="4" height="15"/><rect x="17" y="3" width="4" height="18"/></svg>
     Dashboard
   </a>
-  <div class="nav-badge">ITL Portal</div>
+  <div class="nav-badge">IT Manager Portal</div>
 </nav>
 <div class="layout">
   <aside class="sidebar">
-    <div class="sb-section">ITL Dashboard</div>
+    <div class="sb-section">IT MGR Dashboard</div>
     <div class="sb-item active">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      รออนุมัติ <span class="sb-badge" id="pendingBadge">—</span>
-    </div>
-    <div class="sb-item" onclick="setFilter('ITM_WAIT')">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-      ส่งต่อ IT MGR แล้ว
+      รออนุมัติสุดท้าย <span class="sb-badge" id="pendingBadge">—</span>
     </div>
     <div class="sb-item" onclick="setFilter('DONE')">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-      เสร็จสิ้น
+      อนุมัติแล้ว/เสร็จสิ้น
+    </div>
+    <div class="sb-item" onclick="setFilter('CANCELLED')">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+      ยกเลิก
+    </div>
+    <div class="sb-item" onclick="setFilter('ICO_WORK')">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>
+      ตีกลับ ICO <span class="sb-badge" id="backBadge" style="background:var(--amber);">—</span>
     </div>
   </aside>
   <main class="main">
     <div class="stats-row">
       <div class="stat-card">
-        <div class="stat-label">รออนุมัติ ITL</div>
+        <div class="stat-label">รออนุมัติ IT MGR</div>
         <div class="stat-value" id="s-pending">—</div>
-        <div class="stat-pill" style="background:var(--orange-pale);color:var(--orange);border:1px solid var(--orange-border);">Pending</div>
+        <div class="stat-pill" style="background:var(--teal-pale);color:var(--teal);border:1px solid var(--teal-border);">Pending</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">ส่งต่อ IT MGR</div>
-        <div class="stat-value" id="s-itm">—</div>
-        <div class="stat-pill" style="background:var(--blue-pale);color:var(--blue);border:1px solid var(--blue-border);">Forwarded</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">ตีกลับ ICO</div>
-        <div class="stat-value" id="s-back">—</div>
-        <div class="stat-pill" style="background:var(--amber-pale);color:var(--amber);border:1px solid var(--amber-border);">Returned</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">เสร็จ/ผ่าน IT MGR</div>
-        <div class="stat-value" id="s-final">—</div>
-        <div class="stat-pill" style="background:var(--teal-pale,#F0FDFA);color:#0F766E;border:1px solid #99F6E4;">Closed</div>
+        <div class="stat-label">อนุมัติแล้ว (รอปิด)</div>
+        <div class="stat-value" id="s-approved">—</div>
+        <div class="stat-pill" style="background:var(--blue-pale);color:var(--blue);border:1px solid var(--blue-border);">ICO ดำเนินการ</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">เสร็จสิ้น</div>
         <div class="stat-value" id="s-done">—</div>
         <div class="stat-pill" style="background:var(--green-pale);color:var(--green);border:1px solid var(--green-border);">Done</div>
       </div>
+      <div class="stat-card">
+        <div class="stat-label">ยกเลิก</div>
+        <div class="stat-value" id="s-cancel">—</div>
+        <div class="stat-pill" style="background:var(--red-pale);color:var(--red);border:1px solid var(--red-border);">Cancelled</div>
+      </div>
+      <div class="stat-card" style="border-color:var(--amber-border);">
+        <div class="stat-label">ตีกลับ ICO</div>
+        <div class="stat-value" id="s-back" style="color:var(--amber);">—</div>
+        <div class="stat-pill" style="background:var(--amber-pale);color:var(--amber);border:1px solid var(--amber-border);">รอ ICO แก้ไข</div>
+      </div>
     </div>
     <div class="toolbar">
-      <span class="toolbar-title">รายการรออนุมัติ ITL</span>
+      <span class="toolbar-title">รายการรออนุมัติ IT Manager</span>
       <div class="search-wrap">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input class="search-input" type="text" id="searchInput" placeholder="ค้นหา...">
       </div>
       <select class="filter-select" id="statusFilter">
-        <option value="ITL_WAIT">รออนุมัติ ITL</option>
-        <option value="ITM_WAIT">รอ IT MGR</option>
+        <option value="ITM_WAIT">รออนุมัติ IT MGR</option>
+        <option value="ICO_FINAL">ICO กำลังปิดงาน</option>
+        <option value="ICO_WORK">ตีกลับ ICO</option>
         <option value="DONE">เสร็จสิ้น</option>
+        <option value="CANCELLED">ยกเลิก</option>
         <option value="">ทั้งหมด</option>
       </select>
       <button class="btn-primary" onclick="refreshTickets()">
@@ -207,12 +220,12 @@ textarea{resize:vertical;min-height:90px;}
     </div>
     <div class="table-wrap">
       <table>
-        <colgroup><col style="width:110px"><col style="width:150px"><col style="width:120px"><col><col style="width:130px"><col style="width:100px"><col style="width:110px"></colgroup>
+        <colgroup><col style="width:110px"><col style="width:150px"><col style="width:110px"><col><col style="width:80px"><col style="width:120px"><col style="width:100px"><col style="width:110px"></colgroup>
         <thead><tr>
-          <th>เลขที่</th><th>ผู้แจ้ง</th><th>แผนก</th><th>ปัญหา</th><th>สถานะ</th><th>วันที่แจ้ง</th><th>จัดการ</th>
+          <th>เลขที่</th><th>ผู้แจ้ง</th><th>แผนก</th><th>ปัญหา</th><th>ค่าใช้จ่าย</th><th>สถานะ</th><th>วันที่แจ้ง</th><th>จัดการ</th>
         </tr></thead>
         <tbody id="ticketTableBody">
-          <tr class="loading-row"><td colspan="7">กำลังโหลด...</td></tr>
+          <tr class="loading-row"><td colspan="8">กำลังโหลด...</td></tr>
         </tbody>
       </table>
     </div>
@@ -225,96 +238,114 @@ textarea{resize:vertical;min-height:90px;}
   <div class="modal">
     <div class="modal-hd">
       <div>
-        <div class="modal-title" id="rm-title">ตรวจสอบงาน</div>
+        <div class="modal-title" id="rm-title">อนุมัติงาน</div>
         <div style="font-size:12px;color:var(--sub);margin-top:2px;" id="rm-sub">—</div>
       </div>
       <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
-    <!-- Timeline -->
+    <div id="bounce-banner" style="display:none;margin:16px 24px 0;background:var(--amber-pale);border:1.5px solid var(--amber-border);border-radius:10px;padding:12px 16px;align-items:flex-start;gap:10px;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" style="flex-shrink:0;margin-top:1px;"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>
+      <div style="font-size:12px;color:#92400E;line-height:1.6;">
+        <strong>งานนี้ถูก IT MGR ตีกลับไป ICO</strong> — ยังไม่ได้เริ่มขั้นตอนใหม่จนกว่า ICO จะแก้ไขและส่งกลับมาอีกครั้ง<br>
+        <span id="bounce-meta"></span>
+      </div>
+    </div>
     <div class="timeline">
       <div class="tl-step done"><div class="tl-dot">✓</div><div class="tl-label">ผู้แจ้ง</div></div>
       <div class="tl-step done"><div class="tl-dot">✓</div><div class="tl-label">หัวหน้า</div></div>
       <div class="tl-step done"><div class="tl-dot">✓</div><div class="tl-label">ICO</div></div>
-      <div class="tl-step active"><div class="tl-dot">ITL</div><div class="tl-label">ITL อนุมัติ</div></div>
-      <div class="tl-step"><div class="tl-dot">MGR</div><div class="tl-label">IT MGR</div></div>
+      <div class="tl-step done"><div class="tl-dot">✓</div><div class="tl-label">ITL</div></div>
+      <div class="tl-step active"><div class="tl-dot">MGR</div><div class="tl-label">IT MGR</div></div>
       <div class="tl-step"><div class="tl-dot">✓</div><div class="tl-label">ปิดงาน</div></div>
     </div>
-    <!-- Cost + Approver Chain Banner -->
-    <div style="padding:12px 24px 0;display:flex;gap:10px;flex-wrap:wrap;">
-      <div style="flex:1;min-width:180px;background:linear-gradient(135deg,#F0FDFA,#EFF6FF);border:1px solid #99F6E4;border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;">
-        <div><div style="font-size:10px;font-weight:700;color:#0F766E;letter-spacing:.06em;margin-bottom:4px;">ค่าใช้จ่ายที่ ICO แจ้ง</div><div style="font-size:11px;color:#6B7280;" id="cost-sub">รออนุมัติ</div></div>
-        <div style="font-family:'Inter',sans-serif;font-size:22px;font-weight:800;color:#0F766E;" id="cost-banner">฿ —</div>
+    <!-- Cost Box -->
+    <!-- Approver Chain -->
+    <div style="padding:10px 24px 0;">
+      <div style="background:var(--field,#F9FAFB);border:1px solid var(--border,#E5E7EB);border-radius:10px;padding:10px 14px;">
+        <div style="font-size:10px;font-weight:700;color:var(--mute,#9CA3AF);letter-spacing:.06em;margin-bottom:8px;">ห่วงโซ่การอนุมัติ (ก่อนถึง IT MGR)</div>
+        <div id="approver-chain-itm" style="display:flex;flex-wrap:wrap;gap:8px;"><span style="font-size:11px;color:var(--mute);">กำลังโหลด...</span></div>
       </div>
-      <div style="flex:2;min-width:260px;background:var(--field,#F9FAFB);border:1px solid var(--border,#E5E7EB);border-radius:10px;padding:10px 14px;">
-        <div style="font-size:10px;font-weight:700;color:var(--mute,#9CA3AF);letter-spacing:.06em;margin-bottom:8px;">ผู้อนุมัติก่อนหน้า</div>
-        <div id="approver-chain" style="display:flex;flex-wrap:wrap;gap:8px;">
-          <span style="font-size:11px;color:var(--mute);">กำลังโหลด...</span>
-        </div>
+    </div>
+    <div style="padding:8px 24px 4px;">
+      <div class="cost-box">
+        <div><div class="cost-label">ค่าใช้จ่ายรวมที่ ICO แจ้ง</div><div style="font-size:11px;color:var(--sub);margin-top:2px;">รออนุมัติจาก IT Manager</div></div>
+        <div class="cost-val" id="rm-cost-box">฿ —</div>
       </div>
     </div>
     <!-- Tabs -->
-    <div style="padding:8px 24px 0;"><div class="tab-bar">
+    <div style="padding:0 24px;"><div class="tab-bar">
       <button class="tab-btn active" onclick="switchTab('ti-req',this)">คำขอ</button>
       <button class="tab-btn" onclick="switchTab('ti-ico',this)">งาน ICO</button>
+      <button class="tab-btn" onclick="switchTab('ti-itl',this)">ITL Review</button>
       <button class="tab-btn" onclick="switchTab('ti-log',this)">Log</button>
       <button class="tab-btn" onclick="switchTab('ti-files',this)">ไฟล์แนบ</button>
     </div></div>
-    <!-- Tab: คำขอ -->
     <div class="tab-pane active" id="ti-req">
       <div class="info-group">
         <div class="info-row"><span class="info-key">ผู้แจ้ง</span><span class="info-val" id="rm-requester">—</span></div>
         <div class="info-row"><span class="info-key">ฝ่าย/แผนก</span><span class="info-val" id="rm-dept">—</span></div>
         <div class="info-row"><span class="info-key">สถานที่</span><span class="info-val" id="rm-loc">—</span></div>
         <div class="info-row"><span class="info-key">รหัสทรัพย์สิน</span><span class="info-val" id="rm-asset">—</span></div>
-      </div>
-      <div class="info-group">
         <div class="info-row"><span class="info-key">วันที่แจ้ง</span><span class="info-val" id="rm-reqdate">—</span></div>
-        <div class="info-row"><span class="info-key">ต้องการภายใน</span><span class="info-val" id="rm-needdate">—</span></div>
         <div class="info-row" style="flex-direction:column;gap:4px;"><span class="info-key" style="min-width:unset;">ปัญหา</span><span class="info-val" id="rm-issue" style="white-space:pre-wrap;">—</span></div>
       </div>
     </div>
-    <!-- Tab: งาน ICO -->
     <div class="tab-pane" id="ti-ico">
       <div class="info-group">
-        <div class="info-row"><span class="info-key">ชื่อเจ้าหน้าที่ ICO</span><span class="info-val" id="rm-staff">—</span></div>
+        <div class="info-row"><span class="info-key">ICO เจ้าหน้าที่</span><span class="info-val" id="rm-staff">—</span></div>
         <div class="info-row"><span class="info-key">วันที่รับงาน</span><span class="info-val" id="rm-recv">—</span></div>
         <div class="info-row"><span class="info-key">หมวดหมู่</span><span class="info-val" id="rm-cat">—</span></div>
         <div class="info-row"><span class="info-key">ตรวจสอบพบว่า</span><span class="info-val" id="rm-inspect" style="white-space:pre-wrap;">—</span></div>
         <div class="info-row"><span class="info-key">การแก้ไข/บริการ</span><span class="info-val" id="rm-action" style="white-space:pre-wrap;">—</span></div>
-        <div class="info-row"><span class="info-key">รายการอะไหล่</span><span class="info-val" id="rm-parts">—</span></div>
-        <div class="info-row"><span class="info-key">ค่าใช้จ่าย</span><span class="info-val" id="rm-cost">—</span></div>
+        <div class="info-row"><span class="info-key">อะไหล่</span><span class="info-val" id="rm-parts">—</span></div>
+        <div class="info-row"><span class="info-key">ค่าใช้จ่าย</span><span class="info-val" id="rm-cost" style="font-weight:700;color:var(--teal);">—</span></div>
         <div class="info-row"><span class="info-key">ข้อแนะนำผู้ใช้</span><span class="info-val" id="rm-rec">—</span></div>
       </div>
     </div>
-    <!-- Tab: Log -->
+    <div class="tab-pane" id="ti-itl">
+      <div class="info-group">
+        <div class="info-row"><span class="info-key">ITL ผู้ตรวจสอบ</span><span class="info-val" id="rm-itl-name">—</span></div>
+        <div class="info-row"><span class="info-key">ผล ITL</span><span class="info-val" id="rm-itl-status">—</span></div>
+        <div class="info-row" style="flex-direction:column;gap:4px;"><span class="info-key" style="min-width:unset;">ความเห็น ITL</span><span class="info-val" id="rm-itl-comment" style="white-space:pre-wrap;">—</span></div>
+      </div>
+    </div>
     <div class="tab-pane" id="ti-log">
       <div class="comment-thread" id="rm-thread"><div style="padding:16px;text-align:center;color:var(--mute);font-size:12px;">กำลังโหลด...</div></div>
     </div>
-    <!-- Tab: ไฟล์แนบ -->
     <div class="tab-pane" id="ti-files">
-      <div style="margin-bottom:12px;">
-        <div style="font-size:11px;color:var(--mute);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">ไฟล์จากผู้แจ้ง</div>
-        <div id="rm-requester-files"></div>
-      </div>
-      <div style="border-top:1px solid var(--border);padding-top:12px;">
-        <div style="font-size:11px;color:var(--mute);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">ไฟล์งาน ICO</div>
-        <div id="rm-ico-files"></div>
+      <div style="margin-bottom:12px;"><div style="font-size:11px;color:var(--mute);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">ไฟล์จากผู้แจ้ง</div><div id="rm-req-files"></div></div>
+      <div style="border-top:1px solid var(--border);padding-top:12px;"><div style="font-size:11px;color:var(--mute);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">ไฟล์งาน ICO</div><div id="rm-ico-files"></div></div>
+    </div>
+    <!-- Decision -->
+    <div class="form-row" style="margin-top:4px;">
+      <label style="margin-bottom:8px;">ระดับความสำคัญ (IT MGR กำหนด)</label>
+      <div class="priority-row" style="padding:0;">
+        <button class="priority-btn" id="p-low" onclick="setPriority('LOW')">🟢 ต่ำ</button>
+        <button class="priority-btn" id="p-med" onclick="setPriority('MED')">🟡 ปานกลาง</button>
+        <button class="priority-btn" id="p-high" onclick="setPriority('HIGH')">🔴 สูง</button>
       </div>
     </div>
-    <!-- Comment + Action -->
-    <div class="form-row" style="margin-top:8px;">
-      <label>ความเห็น ITL <span style="font-size:10px;color:var(--mute);">(แสดงให้ ICO และ IT MGR เห็น)</span></label>
-      <textarea id="itl-comment" rows="3" placeholder="พิมพ์ความเห็น หรือเหตุผล..."></textarea>
+    <div class="form-row">
+      <label>ความเห็น IT Manager <span style="font-size:10px;color:var(--mute);">(ประกอบการตัดสินใจ)</span></label>
+      <textarea id="itm-comment" rows="3" placeholder="พิมพ์ความเห็น, เหตุผล, เงื่อนไขพิเศษ..."></textarea>
     </div>
     <div class="modal-foot">
       <button class="btn-neutral" onclick="closeModal()">ปิด</button>
+      <button class="btn-danger" onclick="doAction('CANCELLED')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        ยกเลิกงาน
+      </button>
       <button class="btn-warn" onclick="doAction('BACK_TO_ICO')">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>
         ตีกลับ ICO
       </button>
-      <button class="btn-success" onclick="doAction('ITL_APPROVE')">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-        อนุมัติ → ส่งต่อ IT MGR
+      <button class="btn-warn" onclick="doAction('BACK_TO_ITL')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>
+        ตีกลับ ITL
+      </button>
+      <button class="btn-success" onclick="doAction('ITM_APPROVE')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        อนุมัติ → แจ้ง ICO ปิดงาน
       </button>
     </div>
   </div>
@@ -327,23 +358,42 @@ const HDR={'apikey':KEY,'Authorization':'Bearer '+KEY};
 const API=`${SB}/rest/v1/tickets`;
 const SVCAPI=`${SB}/rest/v1/ticket_services`;
 const LOG=`${SB}/rest/v1/tickets_log`;
-let allTickets=[],currentTicket=null,currentService=null;
+let allTickets=[],currentTicket=null,currentService=null,selectedPriority='MED';
 document.getElementById('searchInput').addEventListener('input',renderTable);
 document.getElementById('statusFilter').addEventListener('change',renderTable);
 refreshTickets();
 async function refreshTickets(){
-  document.getElementById('ticketTableBody').innerHTML='<tr class="loading-row"><td colspan="7">กำลังโหลด...</td></tr>';
+  document.getElementById('ticketTableBody').innerHTML='<tr class="loading-row"><td colspan="8">กำลังโหลด...</td></tr>';
   try{
-    const res=await fetch(`${API}?status=in.(ITL_WAIT,ITM_WAIT,DONE,ICO_WORK,ICO_FINAL,CANCELLED)&order=request_date.desc&limit=200`,{headers:HDR});
+    const res=await fetch(`${API}?status=in.(ITM_WAIT,ICO_FINAL,DONE,CANCELLED)&order=request_date.desc&limit=200`,{headers:HDR});
     const data=await res.json();
     if(!Array.isArray(data))throw new Error(data.message||'โหลดไม่สำเร็จ');
-    allTickets=data;
-    document.getElementById('s-pending').textContent=data.filter(t=>t.status==='ITL_WAIT').length;
-    document.getElementById('s-itm').textContent=data.filter(t=>t.status==='ITM_WAIT').length;
-    document.getElementById('s-back').textContent=data.filter(t=>t.itl_status==='BACK_TO_ICO').length;
-    document.getElementById('s-final').textContent=data.filter(t=>t.status==='ICO_FINAL'||t.status==='DONE').length;
+
+    /* ── ตีกลับ ICO: หา ticket ที่ IT MGR เคยตีกลับ (จาก log) แล้วเช็คว่ายังค้างอยู่จริง (status ปัจจุบัน = ICO_WORK) ── */
+    let backTickets=[];
+    try{
+      const lr=await fetch(`${LOG}?step_name=eq.IT_MGR_APPROVE&status=eq.BACK_TO_ICO&order=created_at.desc&select=ticket_no,action_by,comment,created_at`,{headers:HDR});
+      const lrows=await lr.json();
+      if(Array.isArray(lrows)&&lrows.length){
+        const bounceInfo={};
+        lrows.forEach(r=>{ if(!bounceInfo[r.ticket_no]) bounceInfo[r.ticket_no]=r; }); // rows เรียง desc แล้ว เก็บแค่ครั้งล่าสุดต่อ ticket
+        const noList=Object.keys(bounceInfo);
+        if(noList.length){
+          const tr=await fetch(`${API}?ticket_no=in.(${noList.map(encodeURIComponent).join(',')})&status=eq.ICO_WORK`,{headers:HDR});
+          const trows=await tr.json();
+          if(Array.isArray(trows))backTickets=trows.map(t=>({...t,_bounce:bounceInfo[t.ticket_no]}));
+        }
+      }
+    }catch(be){console.warn('[ITM] โหลดรายการตีกลับไม่สำเร็จ',be);}
+
+    allTickets=[...data,...backTickets];
+    document.getElementById('s-pending').textContent=data.filter(t=>t.status==='ITM_WAIT').length;
+    document.getElementById('s-approved').textContent=data.filter(t=>t.status==='ICO_FINAL').length;
     document.getElementById('s-done').textContent=data.filter(t=>t.status==='DONE').length;
-    document.getElementById('pendingBadge').textContent=data.filter(t=>t.status==='ITL_WAIT').length;
+    document.getElementById('s-cancel').textContent=data.filter(t=>t.status==='CANCELLED').length;
+    document.getElementById('s-back').textContent=backTickets.length;
+    document.getElementById('pendingBadge').textContent=data.filter(t=>t.status==='ITM_WAIT').length;
+    document.getElementById('backBadge').textContent=backTickets.length;
     renderTable();
   }catch(e){showToast('❌ '+e.message,'err');}
 }
@@ -356,20 +406,23 @@ function renderTable(){
     const ms=!st||t.status===st;
     return mq&&ms;
   });
-  const map={ITL_WAIT:'<span class="status s-itl">รออนุมัติ ITL</span>',ITM_WAIT:'<span class="status s-itm">รอ IT MGR</span>',DONE:'<span class="status s-done">เสร็จสิ้น</span>',ICO_WORK:'<span class="status s-back">ส่งกลับ ICO</span>'};
+  const smap={ITM_WAIT:'<span class="status s-itm">รออนุมัติ IT MGR</span>',ICO_FINAL:'<span class="status" style="background:var(--blue-pale);color:var(--blue);border:1px solid var(--blue-border);">ICO ปิดงาน</span>',DONE:'<span class="status s-done">เสร็จสิ้น</span>',CANCELLED:'<span class="status s-cancel">ยกเลิก</span>',ICO_WORK:'<span class="status" style="background:var(--amber-pale);color:var(--amber);border:1px solid var(--amber-border);">↩ ตีกลับ ICO</span>'};
   const tbody=document.getElementById('ticketTableBody');
-  if(!rows.length){tbody.innerHTML='<tr class="loading-row"><td colspan="7">ไม่พบข้อมูล</td></tr>';return;}
+  if(!rows.length){tbody.innerHTML='<tr class="loading-row"><td colspan="8">ไม่พบข้อมูล</td></tr>';return;}
   tbody.innerHTML=rows.map(t=>{
     const d=t.request_date?new Date(t.request_date).toLocaleDateString('th-TH',{day:'2-digit',month:'2-digit',year:'2-digit'}):'—';
-    const issue=(t.issue_detail||'').slice(0,50)+((t.issue_detail||'').length>50?'…':'');
+    const issue=(t.issue_detail||'').slice(0,45)+((t.issue_detail||'').length>45?'…':'');
+    const cost=t.repair_cost?'฿'+Number(t.repair_cost).toLocaleString():'—';
+    const bounceTip=t._bounce?` title="ตีกลับโดย ${esc(t._bounce.action_by||'—')} เมื่อ ${fmtDT(t._bounce.created_at)}${t._bounce.comment?' — '+esc(t._bounce.comment):''}"`:'';
     return`<tr onclick="openModal('${esc(t.ticket_no)}')">
       <td><span class="td-no">${esc(t.ticket_no)}</span></td>
       <td><span class="td-name">${esc(t.requester_name||'—')}</span></td>
       <td style="font-size:12px;color:var(--sub);">${esc(t.department||'—')}</td>
       <td title="${esc(t.issue_detail||'')}">${esc(issue)}</td>
-      <td>${map[t.status]||t.status}</td>
+      <td style="font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:var(--teal);">${cost}</td>
+      <td${bounceTip}>${smap[t.status]||t.status}</td>
       <td><span class="td-date">${d}</span></td>
-      <td><button class="btn-row btn-review" onclick="event.stopPropagation();openModal('${esc(t.ticket_no)}')">ตรวจสอบ</button></td>
+      <td><button class="btn-row btn-review" onclick="event.stopPropagation();openModal('${esc(t.ticket_no)}')">อนุมัติ</button></td>
     </tr>`;
   }).join('');
   document.getElementById('tableFooter').textContent=`แสดง ${rows.length} รายการ`;
@@ -377,16 +430,27 @@ function renderTable(){
 async function openModal(no){
   currentTicket=allTickets.find(t=>t.ticket_no===no);
   if(!currentTicket)return;
-  document.getElementById('rm-title').textContent=`ตรวจสอบงาน — ${no}`;
+  selectedPriority='MED';
+  setPriority('MED');
+  document.getElementById('rm-title').textContent=`อนุมัติงาน — ${no}`;
   document.getElementById('rm-sub').textContent=currentTicket.issue_detail?currentTicket.issue_detail.slice(0,80):'—';
   document.getElementById('rm-requester').textContent=currentTicket.requester_name||'—';
   document.getElementById('rm-dept').textContent=currentTicket.department||'—';
   document.getElementById('rm-loc').textContent=currentTicket.location||'—';
   document.getElementById('rm-asset').textContent=currentTicket.asset_id||'—';
   document.getElementById('rm-reqdate').textContent=fmtDate(currentTicket.request_date);
-  document.getElementById('rm-needdate').textContent=fmtDate(currentTicket.required_date);
   document.getElementById('rm-issue').textContent=currentTicket.issue_detail||'—';
-  document.getElementById('itl-comment').value='';
+  document.getElementById('rm-itl-name').textContent=currentTicket.itl_name||'—';
+  document.getElementById('rm-itl-status').textContent=currentTicket.itl_status==='ITL_APPROVE'?'✅ อนุมัติ':currentTicket.itl_status||'—';
+  document.getElementById('rm-itl-comment').textContent=currentTicket.itl_comment||'—';
+  document.getElementById('itm-comment').value='';
+  const bb=document.getElementById('bounce-banner');
+  if(currentTicket._bounce){
+    bb.style.display='flex';
+    document.getElementById('bounce-meta').textContent=`ตีกลับโดย ${currentTicket._bounce.action_by||'—'} เมื่อ ${fmtDT(currentTicket._bounce.created_at)}${currentTicket._bounce.comment?' — เหตุผล: '+currentTicket._bounce.comment:''}`;
+  }else{
+    bb.style.display='none';
+  }
   try{
     const r=await fetch(`${SVCAPI}?ticket_no=eq.${encodeURIComponent(no)}&limit=1`,{headers:HDR});
     const rows=await r.json();
@@ -398,23 +462,22 @@ async function openModal(no){
       document.getElementById('rm-inspect').textContent=currentService.inspection_detail||'—';
       document.getElementById('rm-action').textContent=currentService.action_detail||'—';
       document.getElementById('rm-parts').textContent=currentService.spare_parts_detail||'—';
-      const costText=currentService.repair_cost?'฿'+Number(currentService.repair_cost).toLocaleString('th-TH'):'฿ 0';
-      document.getElementById('rm-cost').textContent=costText;
-      document.getElementById('cost-banner').textContent=currentService.repair_cost?'฿'+Number(currentService.repair_cost).toLocaleString('th-TH'):'฿ —';
-      document.getElementById('cost-sub').textContent=currentService.repair_cost?`${currentService.job_category||''}  ${currentService.staff_name||''}`.trim():'ICO ยังไม่ระบุ';
+      const c=currentService.repair_cost?'฿'+Number(currentService.repair_cost).toLocaleString():'—';
+      document.getElementById('rm-cost').textContent=c;
+      document.getElementById('rm-cost-box').textContent=c;
       document.getElementById('rm-rec').textContent=currentService.recommendations||'—';
       const icoF=toArray(currentService.attachment_urls);
-      document.getElementById('rm-ico-files').innerHTML=icoF.length?icoF.map(u=>fileLink(u)).join(''):'<span style="font-size:12px;color:var(--mute);">ไม่มีไฟล์</span>';
-    }
+      document.getElementById('rm-ico-files').innerHTML=icoF.length?icoF.map(u=>fLink(u)).join(''):'<span style="font-size:12px;color:var(--mute);">ไม่มีไฟล์</span>';
+    }else{document.getElementById('rm-cost-box').textContent='฿ —';}
   }catch(e){}
   const reqF=toArray(currentTicket.attachment_url);
-  document.getElementById('rm-requester-files').innerHTML=reqF.length?reqF.map(u=>fileLink(u)).join(''):'<span style="font-size:12px;color:var(--mute);">ไม่มีไฟล์</span>';
+  document.getElementById('rm-req-files').innerHTML=reqF.length?reqF.map(u=>fLink(u)).join(''):'<span style="font-size:12px;color:var(--mute);">ไม่มีไฟล์</span>';
   await loadLog(no);
   buildApproverChain(no);
   switchTab('ti-req',document.querySelector('.tab-btn'));
   document.getElementById('reviewModal').classList.add('open');
 }
-function fileLink(url){const name=decodeURIComponent(url.split('/').pop());return`<a class="glink" href="${esc(url)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(name)}</span></a>`;}
+function fLink(url){const name=decodeURIComponent(url.split('/').pop());return`<a class="glink" href="${esc(url)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(name)}</span></a>`;}
 async function loadLog(no){
   const t=document.getElementById('rm-thread');
   t.innerHTML='<div style="padding:16px;text-align:center;color:var(--mute);font-size:12px;">กำลังโหลด...</div>';
@@ -424,45 +487,54 @@ async function loadLog(no){
     if(!rows.length){t.innerHTML='<div style="padding:16px;text-align:center;color:var(--mute);font-size:12px;">ยังไม่มี log</div>';return;}
     const roleMap={'MANAGER_APPROVE':'หัวหน้างาน','ICO_CHECK':'ICO','ICT_ACTION':'ICO/ช่าง','ITL_APPROVE':'ITL','IT_MGR_APPROVE':'IT Manager'};
     t.innerHTML=rows.map(r=>{
-      const sc=r.status==='APPROVED'?'var(--green)':r.status==='REJECTED'?'var(--red)':'var(--sub)';
+      const sc=r.status==='APPROVED'?'var(--green)':r.status==='REJECTED'||r.status==='CANCELLED'?'var(--red)':'var(--sub)';
       const dt=r.created_at?fmtDT(r.created_at):'';
-      return`<div class="comment-item${r.step_name?'':' system'}"><div class="comment-meta"><span class="comment-who">${esc(r.action_by||'—')}</span><span class="comment-role">${roleMap[r.step_name]||r.step_name||''}</span><span style="font-size:10px;font-weight:700;color:${sc};">${r.status||''}</span><span class="comment-time">${dt}</span></div>${r.comment?`<div class="comment-text">${esc(r.comment)}</div>`:''}</div>`;
+      return`<div class="comment-item"><div class="comment-meta"><span class="comment-who">${esc(r.action_by||'—')}</span><span class="comment-role">${roleMap[r.step_name]||r.step_name||''}</span><span style="font-size:10px;font-weight:700;color:${sc};">${r.status||''}</span><span class="comment-time">${dt}</span></div>${r.comment?`<div class="comment-text">${esc(r.comment)}</div>`:''}</div>`;
     }).join('');
   }catch(e){}
 }
+function setPriority(p){
+  selectedPriority=p;
+  ['low','med','high'].forEach(x=>{const b=document.getElementById('p-'+x);b.className='priority-btn';});
+  document.getElementById('p-'+p.toLowerCase()).classList.add('active-'+p.toLowerCase());
+}
 async function doAction(action){
   if(!currentTicket)return;
-  const comment=document.getElementById('itl-comment').value.trim();
-  if(action==='BACK_TO_ICO'&&!comment){showToast('กรุณาระบุเหตุผลก่อนตีกลับ','err');return;}
-  const itlName=prompt('ชื่อ ITL ผู้อนุมัติ:');
-  if(!itlName||!itlName.trim()){showToast('กรุณาระบุชื่อก่อน','err');return;}
-  const newStatus=action==='ITL_APPROVE'?'ITM_WAIT':'ICO_WORK';
-  const logStatus=action==='ITL_APPROVE'?'APPROVED':action; // BACK_TO_ICO บันทึกตามจริง ไม่ยุบเป็น REJECTED
-  const btn=action==='ITL_APPROVE'?document.querySelector('.btn-success'):document.querySelector('.btn-warn');
-  if(btn){btn.disabled=true;}
+  const comment=document.getElementById('itm-comment').value.trim();
+  if((action==='CANCELLED'||action==='BACK_TO_ITL'||action==='BACK_TO_ICO')&&!comment){showToast('กรุณาระบุเหตุผล','err');return;}
+  const mgrName=prompt('ชื่อ IT Manager:');
+  if(!mgrName||!mgrName.trim()){showToast('กรุณาระบุชื่อก่อน','err');return;}
+  const statusMap={ITM_APPROVE:'ICO_FINAL',CANCELLED:'CANCELLED',BACK_TO_ITL:'ITL_WAIT',BACK_TO_ICO:'ICO_WORK'};
+  const newStatus=statusMap[action]||'ICO_FINAL';
+  const logStatus=action==='ITM_APPROVE'?'APPROVED':action==='CANCELLED'?'CANCELLED':action; // BACK_TO_ITL / BACK_TO_ICO บันทึกตามจริง ไม่ยุบเป็น REJECTED
+  /* disable all action buttons */
+  document.querySelectorAll('.modal-foot button').forEach(b=>b.disabled=true);
   try{
     /* อัปเดต ticket status — core step */
-    /* อัปเดตเฉพาะ status (ไม่ส่ง column ที่อาจไม่มีใน schema) */
+    /* อัปเดตเฉพาะ status (เก็บ itm info ใน tickets_log) */
     const ticketRes=await fetch(`${API}?ticket_no=eq.${encodeURIComponent(currentTicket.ticket_no)}`,{
       method:'PATCH',
       headers:{...HDR,'Content-Type':'application/json','Prefer':'return=minimal'},
-      body:JSON.stringify({status:newStatus,itl_approved_at:new Date().toISOString()})
+      body:JSON.stringify({
+        status:          newStatus,
+        itm_approved_at: action==='ITM_APPROVE'?new Date().toISOString():null
+      })
     });
     if(!ticketRes.ok){const e=await ticketRes.text();throw new Error('อัปเดตสถานะไม่สำเร็จ: '+e);}
-    /* บันทึก log — จุดนี้คือแหล่งข้อมูลจริงที่ ICO ใช้แสดงผล ITL ต้องเช็คว่าสำเร็จจริง */
+    /* บันทึก log — จุดนี้คือแหล่งข้อมูลจริงที่ ICO ใช้แสดงผล IT MGR ต้องเช็คว่าสำเร็จจริง */
     const logRes=await fetch(LOG,{
       method:'POST',
       headers:{...HDR,'Content-Type':'application/json','Prefer':'return=minimal'},
-      body:JSON.stringify({ticket_no:currentTicket.ticket_no,step_name:'ITL_APPROVE',status:logStatus,action_by:itlName.trim(),comment:comment||null})
+      body:JSON.stringify({ticket_no:currentTicket.ticket_no,step_name:'IT_MGR_APPROVE',status:logStatus,action_by:mgrName.trim(),comment:comment||null})
     });
-    if(!logRes.ok){const le=await logRes.text();console.error('[ITL] บันทึก log ไม่สำเร็จ:',le);showToast('⚠️ อัปเดตสถานะสำเร็จ แต่บันทึกประวัติ (log) ไม่สำเร็จ: '+le,'err');}
+    if(!logRes.ok){const le=await logRes.text();console.error('[ITM] บันทึก log ไม่สำเร็จ:',le);showToast('⚠️ อัปเดตสถานะสำเร็จ แต่บันทึกประวัติ (log) ไม่สำเร็จ: '+le,'err');}
     /* ── Make.com Webhook ── */
     try{
       await fetch('https://hook.us2.make.com/gjjomwjmrzwr2rnsu443vaq4omxqv8vc',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({
-      event:         action==='ITL_APPROVE'?'ITL_APPROVE':'REJECTED',
+      event:         action==='ITM_APPROVE'?'IT_MGR_APPROVE':action==='CANCELLED'?'CANCELLED':'REJECTED',
       action:        action,
       new_status:    newStatus,
       ticket_no:     currentTicket.ticket_no,
@@ -471,20 +543,24 @@ async function doAction(action){
       department:    currentTicket.department  ||'',
       issue_detail:  currentTicket.issue_detail||'',
       request_date:  currentTicket.request_date||'',
-      itl_name:      itlName.trim(),
-      itl_comment:   comment||'',
-      itl_approved_at: new Date().toISOString(),
+      itm_name:      mgrName.trim(),
+      itm_comment:   comment||'',
+      itm_approved_at: action==='ITM_APPROVE'?new Date().toISOString():'',
+      priority:      selectedPriority,
+      repair_cost:   currentService?currentService.repair_cost||0:0,
+      action_detail: currentService?currentService.action_detail||'':'',
       timestamp:     new Date().toISOString()
 })
       });
     }catch(wErr){console.warn('[Make webhook]',wErr);}
-    showToast(action==='ITL_APPROVE'?'✅ อนุมัติ — ส่งต่อ IT MGR แล้ว':'↩ ตีกลับ ICO แล้ว','ok');
+    const msgs={ITM_APPROVE:'✅ อนุมัติแล้ว — แจ้ง ICO ปิดงาน',CANCELLED:'🚫 ยกเลิกงานแล้ว',BACK_TO_ITL:'↩ ตีกลับ ITL แล้ว',BACK_TO_ICO:'↩ ตีกลับ ICO แล้ว'};
+    showToast(msgs[action]||'บันทึกแล้ว','ok');
     closeModal();await refreshTickets();
   }catch(e){
-    console.error('ITL doAction error:',e);
+    console.error('ITM doAction error:',e);
     showToast('❌ '+e.message,'err');
   }
-  finally{if(btn)btn.disabled=false;}
+  finally{document.querySelectorAll('.modal-foot button').forEach(b=>b.disabled=false);}
 }
 function closeModal(){document.getElementById('reviewModal').classList.remove('open');}
 function switchTab(id,btn){document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');if(btn)btn.classList.add('active');}
@@ -500,27 +576,21 @@ function fmtDT(s){
   return `${day}/${mon}/${yr} ${hr}:${mn}`;
 }
 async function buildApproverChain(no){
-  const chainEl=document.getElementById('approver-chain');
+  const chainEl=document.getElementById('approver-chain-itm');
+  if(!chainEl)return;
   try{
     const r=await fetch(`${LOG}?ticket_no=eq.${encodeURIComponent(no)}&order=created_at.asc`,{headers:HDR});
     const rows=await r.json();
-    if(!Array.isArray(rows)||!rows.length){chainEl.innerHTML='<span style="font-size:11px;color:var(--mute);">ยังไม่มีการอนุมัติก่อนหน้า</span>';return;}
+    if(!Array.isArray(rows)||!rows.length){chainEl.innerHTML='<span style="font-size:11px;color:var(--mute);">ยังไม่มีประวัติ</span>';return;}
     const roleMap={'MANAGER_APPROVE':['หัวหน้างาน','#D97706'],'ICO_CHECK':['ICO','#7C3AED'],'ICT_ACTION':['ICO/ช่าง','#7C3AED'],'ITL_APPROVE':['ITL','#EA580C'],'IT_MGR_APPROVE':['IT Manager','#0F766E']};
-    const approved=rows.filter(r=>['APPROVED','COMMENT'].includes(r.status)||r.status==='DONE');
-    if(!approved.length){chainEl.innerHTML='<span style="font-size:11px;color:var(--mute);">ยังไม่มีการอนุมัติก่อนหน้า</span>';return;}
+    const approved=rows.filter(r=>['APPROVED','COMMENT','DONE'].includes(r.status));
     chainEl.innerHTML=approved.map(r=>{
       const [roleLabel,color]=roleMap[r.step_name]||['—','#9CA3AF'];
       const sc=r.status==='APPROVED'||r.status==='DONE'?'#15803D':r.status==='REJECTED'?'#DC2626':'#6B7280';
       return`<div style="display:flex;align-items:center;gap:6px;background:white;border:1px solid #E5E7EB;border-radius:7px;padding:5px 10px;">
         <div style="width:6px;height:6px;border-radius:50%;background:${color};flex-shrink:0;"></div>
-        <div>
-          <div style="font-size:11px;font-weight:700;color:#111827;">${esc(r.action_by||'—')}</div>
-          <div style="font-size:9px;color:${color};">${roleLabel}</div>
-        </div>
-        <div style="margin-left:4px;text-align:right;">
-          <div style="font-size:9px;font-weight:700;color:${sc};">${r.status}</div>
-          <div style="font-size:9px;color:#9CA3AF;font-family:'Inter',sans-serif;">${fmtDT(r.created_at)}</div>
-        </div>
+        <div><div style="font-size:11px;font-weight:700;color:#111827;">${esc(r.action_by||'—')}</div><div style="font-size:9px;color:${color};">${roleLabel}</div></div>
+        <div style="margin-left:4px;text-align:right;"><div style="font-size:9px;font-weight:700;color:${sc};">${r.status}</div><div style="font-size:9px;color:#9CA3AF;font-family:'Inter',sans-serif;">${fmtDT(r.created_at)}</div></div>
       </div>`;
     }).join('');
   }catch(e){chainEl.innerHTML='<span style="font-size:11px;color:var(--mute);">โหลดไม่สำเร็จ</span>';}
